@@ -1,0 +1,107 @@
+
+#navbar{
+    display: flex;
+    justify-content: space-between;
+}
+#profilebtn{
+    display:none;
+}
+#first{
+    display:flex;
+}
+#middle{
+    display:flex;
+    justify-content: space-around;
+    width:20%;
+    margin:2%;
+}
+#last{
+    display:flex;
+    justify-content: space-around;
+    width:6%;
+    margin:1.5% 0%;
+}
+.middleele{
+    font-size:120%;
+    overflow: visible;
+}
+.navbtn{
+    border-radius:50%;
+    border-color:rgb(57, 57, 58);
+    background-color:white;
+}
+.navbtn:hover{
+    background-color:rgb(249, 249, 249);
+}
+.middleele a{
+    color:black;
+    text-decoration: none;
+    transition:transform 0.3s linear 0.05s;  
+}
+.middleele a:hover{
+    color:#0369A1;
+    transform: translateY(5px);
+}
+#formdiv{
+    background-color: #F0F9FF;
+    display:flex;
+    justify-content:center;
+}
+form{
+    background-color:white;
+    padding:2vh 4vh;
+    width:35%;
+    margin:2vh;
+    border-radius:25px;
+}
+form input{
+    margin-bottom:2vh;
+    width:95%;
+    border-radius:20px;
+    height:3vh;
+    padding:1vh;
+    border:1px solid rgb(201, 201, 201);
+}
+#caution{
+    background-color: rgb(231, 164, 22);
+    padding:0.5vh 2vh;
+    padding-bottom:2vh;
+    border-radius:20px;
+}
+#caution div{
+    display: flex;
+    justify-content: left;
+    margin-top:-1vh;
+}
+#caution div h3{
+    margin-left:1vh;
+}
+#signinbtn{
+    width:100%;
+    background-color: #0284C7;
+    border-radius:20px;
+    color:white;
+    padding:1vh;
+    font-size:1rem;
+    font-weight:600;
+}
+#signinbtn:hover{
+    background-color: #0369A1;
+}
+#companybtn{
+    background-color: #0284C7;
+    color:white;
+    font-size: 0.8rem;
+    padding:1.5vh;
+    font-weight:600;
+    border:1px solid #0284C7;
+    border-radius:10px;
+    margin-bottom:1vh;
+}
+#companybtn:hover{
+    background-color: #0369A1;
+}
+#togglediv{
+    margin-top:2vh;
+    display:none;
+}

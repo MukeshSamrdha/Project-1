@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include("../partials/header.ejs") %>
+<link rel="stylesheet" href="/css/ShiperDashboard.css">
+</head>
+<body>
+    <%- include("../partials/navbar.ejs") %>
+    <div id="main">
+    <div id="firstdiv">
+        <h1>Shiper Dashboard</h1>
+        <div id="firstdivbtn">
+            <button id="mybids">My Bids</button>
+            <button id="newshipment">New Shipment</button>
+        </div>
+    </div>
+    <div id="seconddiv">
+        <div class="seconddivele">
+            <h2>Profile Details</h2>
+            <div id="profileinfo">
+                <img src="/assets/user.svg">
+                <div id="profilediv">
+                   <h3>Name</h3>
+                   <p>Name@gmail.com</p>
+                </div>
+            </div>
+            <div class="formlike">
+                <p>Company</p>
+                <div class="formlikeele">Not Yet Entered</div>
+            </div>
+             <div class="formlike">
+                <p>Phone Number</p>
+                <div class="formlikeele">8328501487</div>
+            </div>
+             <div class="formlike">
+                <p>Address</p>
+                <div class="formlikeele">Khaja Mansion Function Hall,Banjara Hills rd-1,Hyderabad</div>
+            </div>
+        </div>
+        <div class="seconddivele">
+            <h2>Vechile Details</h2>
+            <div class="formlike">
+                <p>Vechile Type</p>
+                <div class="formlikeele">Goods Carrier</div>
+            </div>
+             <div class="formlike">
+                <p>Vechile Model</p>
+                <div class="formlikeele">Scania TX-300 TURBO</div>
+            </div>
+             <div class="formlike">
+                <p>Capacity</p>
+                <div class="formlikeele">50,000kg</div>
+            </div>
+        </div>
+        <div class="seconddivele">
+            <h2>Ratings & Reviews</h2>
+            <div id="seconddivflex">
+                <img src="assets/star_filled.svg">
+                <p>5 (1 reviews)</p>
+            </div>
+             <div class="CS">
+             <p>Punctuality</p>
+             <h3>18</h3>
+            </div>
+
+             <div class="CS">
+             <p>Communication</p>
+             <h3>18</h3>
+            </div>
+
+             <div class="CS">
+             <p>Professionalism</p>
+             <h3>18</h3>
+            </div>
+        </div>
+    </div>
+    <div id="thirddiv">
+        <h2>Performance Statistics</h2>
+
+        <div id="thirdelepar">
+            <div class="outerte" style="background-color: #76f376;">
+        <div class="thirdele" >
+            <img src="assets/clock.svg">
+            <div class="thirdelement">
+              <p style="color:#0e8f0e">On time delivery rate</p>
+              <h2>100%</h2>
+            </div>
+        </div>
+        </div>
+
+        <div class="outerte" style="background-color:#6ecffc;">
+         <div class="thirdele" >
+             <img src="assets/truck.svg">
+            <div class="thirdelement">
+              <p style="color:#1774a0">Average delivery time</p>
+              <h2>2-3 days</h2>
+            </div>
+         </div>
+         </div>
+         <div class="outerte" style="background-color: #f678f6;">
+          <div class="thirdele" >
+             <img src="assets/map-pin (1).svg">
+            <div class="thirdelement">
+              <p style="color:#a71ea7">Total distance covered</p>
+              <h2>0 km</h2>
+            </div>
+          </div>
+          </div>
+          </div>
+    </div>
+    <div id="fourthdiv">
+        <div id="fourthfirst">
+            <div id="fourthheader">
+            <h2>Shipment History</h2>
+            <button id="pastshipments">Past Shipments</button>
+            </div>
+            <div id="fourthfirstinner">
+                <h2>Current Shipments In Transit</h2>
+                <p>Currently their are no active shipments to start a shipment please click "newshipment"</p>
+            </div>
+        </div>
+        <div class="seconddivele">
+            <h2>Earnings</h2>
+            <div id="rupeediv">
+            <img src="assets/indian-rupee.svg" id="rupee">
+             <h1>No yet Verified</h1>
+             <p>Total earnings this month</p>
+            </div>
+            <div class="CS">
+             <p>Completed Shipments</p>
+             <h3>18</h3>
+            </div>
+            <div class="CS">
+             <p>Average Earnings/Shipment</p>
+             <h3>6910</h3>
+            </div>
+        </div>
+    </div>
+    </div>
+</body>
+<script src="/js/ShiperDashboard.js"></script>
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+    <%- include('../partials/header.ejs') %>
+    <link rel="stylesheet" href="/css/CustomerSignUp.css">
+</head>
+<body>
+  <%- include('../partials/navbar.ejs') %>
+  <div id="formdiv">
+    <form method="post" action="/CustomerSignUp">
+        <h2>Sign Up</h2>
+        <p>Create your account to get started</p>
+        <div id="namediv">
+            <div>
+            <label for="firstname">FirstName*</label>
+            <br>
+            <input type="text" name="firstname" id="firstname" class="name" required>
+            <br>
+            </div>
+            <div>
+             <label for="lastname">LastName*</label>
+             <br>
+            <input type="text" name="lastname" id="lastname" class="name" required>
+            </div>
+        </div>
+        <br>
+        <div id="remaining">
+        <label for="email">Email*</label>
+        <br>
+        <input type="email" name="email" id="email" required>
+        <br>
+          <label for="dob">Date Of Birth*</label>
+          <br>
+        <input type="date" name="dob" id="dob" required>
+        <br>
+        <br>
+        <label for="createpassword">Create Password*</label>
+        <br>
+        <input type="password" name="createpassword" id="createpassword" required>
+        <br>
+        <br>
+        <label for="verifypassword">Verify Password*</label>
+        <br>
+        <input type="password" name="verifypassword" id="verifypassword" required>
+        <br>
+        <br>
+        <label for="address">Address</label>
+        <br>
+        <input type="text" name="address" id="address" placeholder="You can add/update your address later">
+        <br>
+        <br>
+        <div id="submitdiv">
+            <button type="submit" id="submit">Submit</button>
+        </div>
+        </div>
+    </form>
+  </div>
+</body>
+<script src="/js/CustomerSignUp.js"></script>
+</html>

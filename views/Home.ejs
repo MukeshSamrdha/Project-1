@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+    <%- include('../partials/header.ejs') %>
+    <link rel="stylesheet" href="/css/Home.css">
+</head>
+<body>
+  <%- include('../partials/navbar.ejs') %>
+
+  <div id="profileinfo">
+    <h3>Profile Information</h3>
+    <div class="pione">
+    <div class="profileele">
+    <p>FirstName</p>
+    <h4><%= Result.firstname %></h4>
+    </div>
+    <div class="profileele">
+    <p>SecondName</p>
+    <h4><%= Result.lastname %></h4>
+    </div>
+    </div>
+
+    <div class="profileele1">
+   <p>Email: </p>
+   <h4><%= Result.email %></h4>
+    </div>
+
+    <div class="pione">
+   <div class="profileele">
+   <p>Date Of Birth</p>
+   <h4><%= Result.dob ? new Date(Result.dob).toISOString().slice(0, 10) : 'Not Provided' %></h4>
+   </div>
+   <div class="profileele">
+   <p>Created On</p> 
+   <h4><%= Result.createdAt ? new Date(Result.createdAt).toISOString().slice(0, 10) : 'Not Provided' %></h4>
+   </div>
+   </div>
+   
+    <div class="profileele1">
+   <p> Address:</p>
+   <% let Address=Result.address ; %>
+   <% if(Address == ""){ %>
+     <h4>Not Yet Entered</h4>
+  <% }else{ %>
+      <h4><%= Address %></h4>
+  <% }   %>
+  <!-- add the pencil btn add functionality -->
+    </div>
+    <div>
+        <img src="/assets/log-out.svg">
+        <button id="logoutbtn" type="button">Logout</button>
+    </div>
+  </div>
+  <div class="outervd">
+<div id="viewdetails"> 
+    <!-- id undi not class -->
+    <div class="vdheading">
+        <h3>Shipment#123 Details</h3>
+        <button id="closex"><img src="/assets/x.svg"></button>
+    </div>
+    <h3>Status & Bids</h3> 
+    <div class="one">
+        <div class="vdele">
+            <p>Status</p>
+            <h4>In Transit</h4>
+        </div>
+        <div class="vdele">
+            <p>Number of Bids</p>
+            <h4>5</h4>
+        </div>
+    </div>
+    <h3>Package Dimensions</h3>
+     <div class="two">
+        <div class="vdele">
+            <p>Length</p>
+            <h4>1250</h4>
+        </div>
+        <div class="vdele">
+            <p>Width</p>
+            <h4>4520</h4>
+        </div>
+        <div class="vdele">
+            <p>Height</p>
+            <h4>452</h4>
+        </div>
+        <div class="vdele"> 
+             <p>Weight</p>
+             <h4>20</h4>
+        </div>
+    </div>
+    <h3>From Address</h3>
+    <div class="three">
+        <div class="vdele">
+            <p>House Number</p>
+            <h4>hj12456</h4>
+        </div>
+        <div class="vdele">
+            <p>Colony</p>
+            <h4>hfigh dsdsjn</h4>
+        </div>
+        <div class="vdele">
+            <p>City</p>
+            <h4>munnss</h4>
+        </div>
+         </div>
+        <div class="three">
+         <div class="vdele">
+            <p>pincode</p>
+            <h4>500100</h4>
+        </div>
+        <div class="vdele"> 
+             <p>State</p>
+             <h4>mahalems</h4>
+        </div>
+        </div>
+        <h3>To Address</h3>
+        <div class="three">
+        <div class="vdele">
+            <p>House Number</p>
+            <h4>dd dsmd 5</h4>
+        </div>
+        <div class="vdele">
+            <p>Colony</p>
+            <h4>snsmsms </h4>
+        </div>
+        <div class="vdele">
+            <p>City</p>
+            <h4>jncnjs </h4>
+        </div>
+         </div>
+        <div class="three">
+         <div class="vdele">
+            <p>pincode</p>
+            <h4>601242</h4>
+        </div>
+        <div class="vdele"> 
+             <p>State</p>
+             <h4>msmdsnnds</h4>
+        </div>
+        </div>
+        <h3>Shipping Dates</h3>
+        <div class="three">
+        <div class="datediv">
+            <img src="/assets/calendar-days.svg">
+            <div class="vdele"> 
+             <p>Pick Up Date</p>
+             <h4>20-45-2006</h4>
+            </div>
+        </div>
+        <div class="datediv">
+            <img src="/assets/calendar-days.svg">
+            <div class="vdele"> 
+             <p>Delivery Date</p>
+             <h4>20-85-6203</h4>
+            </div>
+        </div>
+        </div>
+        <h3>Description</h3>
+        <p>Sample Shipment Containing Frafile Items Handle With Care</p>
+</div>
+</div>
+  <div id="main">
+        <h1 id="mainheading">Ship Smarter,Not Harder</h1>
+        <p id="mainpara">
+            "Affordable rates, exceptional service—choose ShipIt for your next shipment."
+        </p>
+        <div id="mainbtn">
+            <button onclick="window.document.location.href='#section1'" id="nsbtn" type="button">Submit New Shipment</button>
+        </div>
+      </div>
+      <div id="yourshipments">
+           <h1 id="yourshipmentheading">Your Shipments</h1>
+           <div id="yourshipmentbtns">
+            <button class="ysb" id="ysbcs">Current Shipments</button>
+            <button class="ysb" id="ysbps">Past Shipments</button>
+           </div>
+           <div id="displaysection">
+            <!-- render the data into divs here past are also their -->
+            <div class="di">
+                <div class="headerdi">
+                    <img src="/assets/package (1).svg">
+                    <h3>Shipment #1</h3>
+                </div>
+                <div id="twodiv">
+                <div>
+                <p>Bids: Demo</p>
+                <p>Status: Demo</p>
+                <p>Time Left: Demo</p>
+                </div>
+                <div id="divbtndi">
+                    <button type="button" class="viewdetailsbtn">View Details</button>
+                </div>
+                </div>
+            </div>
+           </div>
+      </div>
+   <section id="section1">
+    
+    <form method="post" action="/SubmitShipment">
+        <h1>Submit Your Shipment</h1>
+        <!-- <input type="email" name="email" id="email" required> -->
+        <div class="inputdiv">
+            <div class="inputele">
+            <label for="length">Length(cm)</label>
+            <br>
+            <input type="text" id="length" name="length" required placeholder="Eg: 150cm">
+            </div>
+            <div class="inputele">
+            <label for="width">Width(cm)</label>
+            <br>
+            <input type="text" id="width" name="width" required placeholder="Eg: 150cm">
+            </div>
+        </div>
+        <div class="inputdiv">
+            <div class="inputele">
+            <label for="height">Height(cm)</label>
+            <br>
+            <input type="text" id="height" name="height" required placeholder="Eg: 150cm">
+            </div>
+            <div class="inputele">
+            <label for="weight">Weight(kg)</label>
+            <br>
+            <input type="text" id="weight" name="weight" required placeholder="Eg: 15kg">
+            </div>
+        </div>
+    <h1>From Address</h1>
+      <div class="inputdiv">
+            <div class="inputele">
+            <label for="hno">House Number</label>
+            <br>
+            <input type="text" id="hno" name="fhno" required placeholder="H.No">
+            </div>
+            <div class="inputele">
+            <label for="colony">Colony</label>
+            <br>
+            <input type="text" id="colony" name="fcolony" required placeholder="Colony">
+            </div>
+        </div>
+        <div class="inputdiv">
+            <div class="inputele">
+            <label for="pincode">Pin Code</label>
+            <br>
+            <input type="number" id="pincode" name="fpincode" required placeholder="505001" maxlength="6" minlength="6">
+            </div>
+            <div class="inputele">
+            <label for="city">City</label>
+            <br>
+            <input type="text" id="city" name="fcity" required placeholder="City/District">
+            </div>
+        </div>
+        <div class="inputdiv1">
+            <div class="inputele">
+            <label for="state">State</label>
+            <br>
+            <input type="state" id="state" name="fstate" required placeholder="State">
+            </div>
+        </div>
+        <h1>To Address</h1>
+        <div class="inputdiv">
+            <div class="inputele">
+            <label for="hno">House Number</label>
+            <br>
+            <input type="text" id="hno" name="thno" required placeholder="H.No">
+            </div>
+            <div class="inputele">
+            <label for="colony">Colony</label>
+            <br>
+            <input type="text" id="colony" name="tcolony" required placeholder="Colony">
+            </div>
+        </div>
+        <div class="inputdiv">
+            <div class="inputele">
+            <label for="pincode">Pin Code</label>
+            <br>
+            <input type="number" id="pincode" name="tpincode" required placeholder="505001" maxlength="6" minlength="6">
+            </div>
+            <div class="inputele">
+            <label for="city">City</label>
+            <br>
+            <input type="text" id="city" name="tcity" required placeholder="City/District">
+            </div>
+        </div>
+        <div class="inputdiv1">
+            <div class="inputele">
+            <label for="state">State</label>
+            <br>
+            <input type="state" id="state" name="tstate" required placeholder="State">
+            </div>
+        </div>
+        <div class="inputdiv">
+            <div class="inputele">
+            <label for="pud">Pick Up Date</label>
+            <br>
+            <input type="date" id="pud" name="pud" required >
+            </div>
+            <div class="inputele">
+            <label for="dda">Delivery Date</label>
+            <br>
+            <input type="date" id="dda" name="dda" required >
+            </div>
+        </div>
+        <textarea id="description" placeholder="Description" name="description" required></textarea>
+        <label for="photo">Photos</label>
+        <input type="file" id="photos" name="photo" required>
+            <div id="imghead">
+                <div id="mainhead">
+                <img src="/assets/circle-alert.svg">
+                <p>Prohibited Items</p>
+                </div>
+                <p>For safety and legal reasons the following items are strictly prohibited</p>
+                <div id="imgflex">
+                     <div class="ele">
+                        <img src="/assets/bomb.svg">
+                        <p>Explosives</p>
+                </div>
+                <div class="ele">
+                        <img src="/assets/radiation.svg">
+                        <p>Radioactive materials</p>
+                 </div>
+                <div class="ele">
+                        <img src="/assets/biohazard.svg">
+                        <p>Harzardous chemicals</p>
+                 </div>
+                </div>
+            </div>
+            <button type="submit" id="submitbtnshipment">Submit Shipment</button>
+    </form>
+   </section>
+    <%- include('../partials/footer.ejs') %>
+</body>
+<script src="/js/Home.js"></script>
+</html>

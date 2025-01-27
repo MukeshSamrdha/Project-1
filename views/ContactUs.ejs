@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+    <%- include('../partials/header.ejs') %>
+    <link rel="stylesheet" href="/css/ContactUs.css">
+</head>
+<body>
+    <%- include('../partials/navbar.ejs') %>
+    <div id="initiallogin">
+     <div id="beforelogin">
+        <h2 class="beforeloginheading">To interact with this page, please log in!</h2>
+        <div id="beforelogindiv">
+          <button class="beforelogindivele" onclick="window.document.location.href='/Login'">Go To Login Page</button>
+        </div>
+      </div>
+      </div>
+       <div id="profileinfo">
+      <p>For profile details, please go to the Home page.</p>
+      <div>
+      <button onclick="document.location.href='/Home'">Home</button>
+      </div>
+    </div>
+    <div id="main">
+        <h1>Contact Us</h1>
+        <h2>Get In Touch</h2>
+        <p>Have questions or need assistance? We're here to help. Fill out the form, and we'll get back to you as soon as possible.</p>
+        <div class="ele">
+            <img src="/assets/mail.svg">
+            <p>mukeshsamardhaginne@gmail.com</p>
+        </div>
+         <div class="ele">
+            <img src="/assets/phone.svg">
+            <p>8328501487</p>
+        </div>
+         <div class="ele">
+            <img src="/assets/map-pin.svg">
+            <p>Masab Tank,Hyderabad,Telangana</p>
+        </div>
+        <h2>Follow Us On</h2>
+         <a href="https://www.instagram.com/mukeshsamardha/?next=%2F"><img src="/assets/instagram.svg"></a>  
+            <a href="https://x.com/mukeshsamardha"><img src="/assets/twitter.svg"></a>
+            <a href="https://www.linkedin.com/in/mukesh-samardha-ginne/"><img src="/assets/linkedin.svg"></a>
+           <a href=""><img src="/assets/facebook.svg"></a>
+            <div id="form">
+                <form method="post" action="/ContactForm">
+                    <br>
+                   <input type="text" id="name" name="name" placeholder="Your Name" required>
+                   <br>
+                   <br>
+                   <input type="email" id="email" name="email" placeholder="email" required>
+                   <br>
+                   <br>
+                   <input type="number" id="number" name="number" placeholder="number" required maxlength="10" minlength="10">
+                   <br>
+                   <br>
+                   <input type="text" id="subject" name="subject" placeholder="subject" required>
+                   <br>
+                   <br>
+                   <textarea id="description" placeholder="Your Concern" name="description"></textarea>
+                   <br>
+                   <br>
+                   <button type="submit">Submit Response</button>
+                </form>  
+            </div>
+     </div>
+
+      <div id="body2">
+        <h2>Frequently Asked Questions</h2>
+        <div class="question">
+            <div class="imgq" id="zero">
+                <img src="assets/message-circle-question.svg">
+                <p>How Does ShipIt work</p>
+            </div>
+            <div class="answer" id="azero">
+                <p>ShipIt connects customers with individual shippers through an innovative bidding system. Customers post their shipment details, and verified shippers place competitive bids. Customers then choose the best offer for their needs</p>
+            </div>
+        </div>
+        <hr>
+        <div class="question">
+            <div class="imgq" id="one">
+                <img src="assets/message-circle-question.svg">
+                <p>How Do I become a shiper in ShipIt</p>
+            </div>
+            <div class="answer" id="aone">
+                <p>To become a shipper on ShipIt, you need to sign up for an account, complete our verification process, and agree to our terms of service. Once approved, you can start bidding on available shipments.</p>
+            </div>
+            </div>
+           <hr>
+             <div class="question">
+            <div class="imgq" id="two">
+                <img src="assets/message-circle-question.svg">
+                <p>How Does ShipIt work</p>
+            </div>
+            <div class="answer" id="atwo">
+                <p>Yes, all payments on ShipIt are secure. We use industry-standard encryption and secure payment gateways to ensure your financial information is protected.</p>
+            </div>
+        </div>
+        </div>
+    <%- include('../partials/footer.ejs') %>
+</body>
+<script src="/js/ContactUs.js"></script>
+</html>

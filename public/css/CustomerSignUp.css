@@ -1,0 +1,96 @@
+
+#navbar{
+    display: flex;
+    justify-content: space-between;
+}
+#profilebtn{
+    display:none;
+}
+#first{
+    display:flex;
+}
+#middle{
+    display:flex;
+    justify-content: space-around;
+    width:20%;
+    margin:2%;
+}
+#last{
+    display:flex;
+    justify-content: space-around;
+    width:6%;
+    margin:1.5% 0%;
+}
+.middleele{
+    font-size:120%;
+    overflow: visible;
+}
+.navbtn{
+    border-radius:50%;
+    border-color:rgb(57, 57, 58);
+    background-color:white;
+}
+.navbtn:hover{
+    background-color:rgb(249, 249, 249);
+}
+.middleele a{
+    color:black;
+    text-decoration: none;
+    transition:transform 0.3s linear 0.05s;  
+}
+.middleele a:hover{
+    color:#0369A1;
+    transform: translateY(5px);
+}
+#formdiv{
+    display:flex;
+    justify-content: center;
+}
+h2{
+    text-align:center;
+}
+p{
+    text-align:center;
+}
+form{
+    border:1px solid rgb(195, 191, 191);
+    width:40%;
+    border-radius:25px;
+    box-shadow: 0 0 10px 0 grey;
+}
+#namediv{
+    display:flex;
+    justify-content: space-around;
+}
+input{
+    margin-bottom:2vh;
+    width:100%;
+    height:4vh;
+    border-radius:10px;
+    border:1px solid rgb(171, 171, 171);
+    padding-left:1vh;
+}
+.name{
+    height:4vh;
+    width:80%;
+    border-radius:10px;
+}
+#remaining{
+     margin:0vh 9vh;
+}
+#submitdiv{
+    display: flex;
+    justify-content: center;
+}
+#submit{
+     background-color:#0284C7;
+     color:white;
+     padding:1vh 4vw;
+     margin-bottom:4vh;
+     border-radius:25px;
+     font-size:1.2rem;
+     border:1px solid #0284C7;
+}
+#submit:hover{
+    background-color: #0369A1;
+}

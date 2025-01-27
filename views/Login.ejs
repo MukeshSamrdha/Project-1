@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+    <%- include('../partials/header.ejs') %>
+    <link rel="stylesheet" href="/css/Login.css">
+</head>
+<body>
+  <%- include('../partials/navbar.ejs') %>
+
+    <div id="main">
+        <h1>Ship Smater,Not Harder</h1>
+        <p>ShipIt is the revolutionary platform that connects customers with shippers through an innovative bidding system. Save time and money on your shipments today!</p>
+        <div id="btnclass">
+            <button class="btnele" id="getstarted" onclick="window.location.href='#section1'">Get Started</button>
+             <button class="btnele" id="learnmore" >Learn More</button>
+        </div>
+    </div>
+      <section id="section1">
+    <h1 id="formheading">Join ShipIt Today</h1>
+    <div id="btndiv">
+        <button id="customer" class="btnelediv">Customer</button>
+        <button id="retailer" class="btnelediv">Retailer</button>
+    </div>
+    <div class="formdiv">
+        <form method="post" action="/CustSignIn" id="customerform">
+            <div class="imghead">
+                <img src="/assets/user.svg">
+                <h2 class="formheading">Sign In</h2>
+            </div>
+            <p class="formpara">Hi! their please Sign In to your account</p>
+            <label for="cemail">Email</label>
+            <br>
+            <br>
+            <input type="email" name="custemail" id="cemail" placeholder="abc@example.com" required>
+            <br>
+            <br>
+            <label for="cpassword">Password</label>
+            <br>
+            <br>
+            <div class="passworddiv">
+            <input type="password" name="custpassword" id="cpassword" required>
+            <button class="togglebtnp" type="button">SHOW</button>
+            </div>
+            <br>
+            <div class="forgotpassword">
+                <a href="/ForgotPassword" class="forma">Forgot Password?</a>
+            </div>
+            <button class="signinbtn" type="submit">Sign In</button>
+             <div class="forgotpassword">
+                <p>Don't have an account?
+                     <a href="/CustomerSignUp" class="forma">Sign up</a>
+                </p>
+               
+            </div>
+            <button id="googlebtn">
+                <img src="/assets/google logo.jpg" id="googlelogo">
+                <p style="margin-left:5px;" id="googlebtnpara">Sign In With Your Google Account</p>
+            </button>
+        </form>
+
+         <form method="post" target="" action="/RetaSignUp"id="retailerform">
+            <div class="imghead">
+                <img src="/assets/package (1).svg">
+                <h2 class="formheading">Sign In</h2>
+            </div>
+            <p class="formpara">Hi! Shiper please Sign In to your account</p>
+            <label for="remail">Email</label>
+            <br>
+            <br>
+            <input type="email" name="retaemail" id="remail" placeholder="abc@example.com" required>
+            <br>
+            <br>
+            <label for="rpassword">Password</label>
+            <br>
+            <br>
+              <div class="passworddiv">
+           <input type="password" name="retapassword" id="rpassword" required>
+            <button class="togglebtnp" type="button">SHOW</button>
+            </div>
+            <br>
+            <div class="forgotpassword">
+                <a href="/ForgotPassword">Forgot Password?</a>
+            </div>
+            <button class="signinbtn" type="submit">Sign In</button>
+             <div class="forgotpassword">
+                <p>Don't have an account?
+                     <a href="/RetailerSignup" class="forma">Sign up</a>
+                </p>
+            </div>
+        </form>
+    </div>
+    </section>
+    <%- include('../partials/footer.ejs') %>
+</body>
+<script src="/js/Login.js"></script>
+</html>
