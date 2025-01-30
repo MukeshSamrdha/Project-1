@@ -1,5 +1,5 @@
 let z = 0;
-async function Login() {
+async function Login(){
   const response = await fetch("/LogedIn", {
     method: "GET",
     headers: { "Content-Type": "application/json" },
@@ -12,7 +12,7 @@ async function Login() {
       document.querySelector("#initiallogin").style.display = "flex";
        document.querySelector("#homelink").href = "/Login"; 
       document.querySelector('body').style.overflow = "hidden";
-      console.log(z);
+      //console.log(z);
     } else {
       document.querySelector("#profilebtn").style.display = "block";
       document.querySelector("#initiallogin").style.display = "none";

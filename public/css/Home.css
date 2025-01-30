@@ -105,7 +105,9 @@ html{
     border:3px solid #0369A1;
 }
 #displaysection{
+    margin:2vh 0vh;
     height:50vh;
+    overflow-y:scroll;
     display: flex;
     flex-direction: column;
     justify-content: space-around;
@@ -116,6 +118,7 @@ html{
    background-color: white;
     padding:2vh 4vh;
     width:50%;
+    margin:1vh 0vh;
 }
 .headerdi{
    display: flex;
@@ -277,7 +280,7 @@ form button:hover{
 #divbtndi button:hover{
     background-color:#0369A1;
 }
-#viewdetails{
+.viewdetails{
     box-shadow: 0 0 10px 0 gray;
     padding:1vh 4vh;
     position:absolute;
@@ -293,13 +296,13 @@ form button:hover{
     display:flex;
     justify-content: space-between;
 }
-#viewdetails h3{
+.viewdetails h3{
     text-align: center;
 }
-#viewdetails h4{
+.viewdetails h4{
     margin-top:-1vh;
 }
-#viewdetails p{
+.viewdetails p{
     text-align: center;
 }
 .one{
@@ -325,7 +328,7 @@ form button:hover{
 .datediv img{
     margin-right:1vh;
 }
-#closex{
+.closex{
     height:5vh;
     border-radius:25px;
     background-color: white;
@@ -353,4 +356,21 @@ form button:hover{
 }
 #email{
     display: none;
+}
+#shipmentemail{
+    display:none;
+    width:50%;
+}
+#checkbox{
+    display:none;
+   width:50%;
+}
+#noshipment{
+    border-radius: 25px;
+    background-color: white;
+    padding:2vh 4vh;
+    display:flex;
+    justify-content: center;
+    width:50%;
+    margin:1vh 0vh;
 }

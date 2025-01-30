@@ -2,6 +2,7 @@ let verified = 0;
 const otp = document.querySelector("#otp");
 const email = document.querySelector("#email");
 const newpassword = document.querySelector("#changepassword");
+const sendopt = document.querySelector("#sendotp");
 async function getotp() {
     let b;
     const response = await fetch("http://localhost:7000/otp", {
@@ -22,15 +23,19 @@ async function getotp() {
 //         body: json().stringify({ NewPassword: password })
 //     })
 // }
+sendopt.addEventListener("click", () => {
+    alert("An OTP has been sent to your email");
+})
 otp.addEventListener("click", async () => {
     await getotp().then((result) => {
-           let a = prompt("enter the otp");
+           let a = prompt(
+             "Please enter the OTP"
+           );
            console.log(a);
-        if (a == result) {
+        if (a == result){
             verified = 1;
         alert("Verification Done,please change your password");
-       
-    } else {
+    }else{
         alert("try again! the otp you entered is incorrect");
     }
     })

@@ -4,13 +4,12 @@ const mongoose = require("mongoose");
 const nodemailer = require("nodemailer");
 const otp_generator = require("otp-generator");
 const CustomerModel = require("./models/CustomerSignUp");
-const ModeModel = require("./models/Mode");
-const CustModel = require("./models/CustomerSignIn");
 const ShipmentModel = require("./models/ShipmentDetails");
 const ContactModel = require("./models/Contact");
 const RetailerModel = require("./models/RetailerSignUp");
 const LoginoptModel = require("./models/Loginotp");
-let HOMEURL = "https://google.co.in";
+const LoginotpModel = require("./models/Loginotp");
+let HOMEURL = "";
 
 //functions
 function sendAlert(res, message, redirect) {
@@ -23,7 +22,6 @@ function sendAlert(res, message, redirect) {
   );
 }
 function promptgenerate(message) {
-  console.log("Hi");
   `<script>
   let a=prompt('${message}');
   </script>`;
@@ -95,25 +93,41 @@ app.get("/RetailerSignUp", (req, res) => {
 app.get("/Home", (req, res) => {
   const urlParams = new URLSearchParams(req.query);
   const id = urlParams.get("id");
+  // Validate the 'id' before creating a new ObjectId
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return sendAlert(res, "Invalid or missing user ID", "/Login");  
+  }
   let _id = new mongoose.Types.ObjectId(id);
-  CustomerModel.findOne({ _id }).then((result) => {
-    console.log(result);
-    res.render("Home", { title: "home", Result: result});
+  CustomerModel.findOne({ _id }).then((Customer) => {
+    let email = Customer.email;
+    ShipmentModel.find({ email: email }).then((result) => {
+      res.render("Home", { title: "Home", Result: Customer, Shipment: result });
+    }).catch((err) => {
+      console.log("Shipment loading failed");
+    })
   }).catch((err) => {
     console.log(err);
   });
 });
 //LOGOUT
 app.get("/LogedIn", (req, res) => {
+   const urlParams = new URLSearchParams(req.query);
+   const id = urlParams.get("id");
+   // Validate the 'id' before creating a new ObjectId
+   if (!mongoose.Types.ObjectId.isValid(id)) {
+     return sendAlert(res, "Invalid or missing user ID", "/Login");
+   }
+
+  let _id = new mongoose.Types.ObjectId(id);
   let answer = { Login: LogedIn };
   res.status(200).json(answer);
 });
+
 app.get("/ForgotPassword", (req, res) => {
   res.render("ForgotPassword");
 });
 //OTP
 app.get("/otp", (req, res) => {
-  console.log("Hi");
   res.status(200).json({ OTP: otp });
 });
 app.get("/ShiperDashboard", (req, res) => {
@@ -122,10 +136,14 @@ app.get("/ShiperDashboard", (req, res) => {
 
 //post requests  //processing
 //LOGOUT
-app.post("/LogedOut", (req, res) => {
-  const { Login } = req.body; // Extract 'Login' value from the request body
-  LogedIn = Login;
-  res.status(200).send("Login status received successfully"); // Sends a success response
+app.post("/LogedOut", (req, res) => { //change
+  const { email, loged } = req.body; // Extract 'Login' value from the request body
+  LoginotpModel.updateOne({ email }, { loged }).then(() => {
+    // res.status(200).send("Login status received successfully"); // Sends a success response
+    res.status(200).send("Response sended successfully");
+  }).catch((err) => {
+    console.log(err);
+  })
 });
 //ADD HOMEURL
 app.post("/CustomerSignUp", (req, res) => {
@@ -150,13 +168,14 @@ app.post("/CustomerSignUp", (req, res) => {
                 email: emailid,
                 otp: "",
                 loged: true,
+                mode: 0
               });
               record
                 .save()
                 .then(() => {
                   console.log("Saved Details Successfully");
-                  console.log(result);
-                  res.render("Home", { title: "Home", Result: result });
+                   HOMEURL = result._id;
+                   sendAlert(res, "Login Successful", "/Home?id=" + HOMEURL);
                 })
                 .catch((err) => {
                   console.log("Failed to load Details");
@@ -184,18 +203,20 @@ app.post("/CustomerSignUp", (req, res) => {
 });
 
 //logins
-let globalemail;
 app.post("/CustSignIn", (req, res) => {
-  const record = new CustModel(req.body);
   let email = req.body.custemail;
   let password = req.body.custpassword;
   let k = CustomerModel.findOne({ email })
     .then((result) => {
       if (result != null) {
         if (result.verifypassword == password) {
-          HOMEURL = result._id;
-          // console.log(HOMEURL);
-          sendAlert(res, "Login Successful", "/Home?id=" + HOMEURL);
+          let login = { loged: true };
+          LoginoptModel.updateOne({email}, login).then(() => {
+             HOMEURL = result._id;
+             sendAlert(res, "Login Successful", "/Home?id=" + HOMEURL);
+          }).catch((err) => {
+            console.log(err);
+          })
         } else {
           sendAlert(
             res,
@@ -214,14 +235,20 @@ app.post("/CustSignIn", (req, res) => {
 
 app.post("/SubmitShipment", (req, res) => {
   const shipment = new ShipmentModel(req.body);
-  shipment
-    .save()
-    .then((result) => {
-      console.log("saved successfully");
-    })
-    .catch((err) => {
-      console.log("failed");
-    });
+  let email = req.body.email;
+  CustomerModel.findOne({ email }).then((result) => {
+    shipment
+      .save()
+      .then(() => {
+        HOMEURL = result._id;
+        sendAlert(res, "Shipment Submitted Successfully", "/Home?id=" + HOMEURL);
+      })
+      .catch((err) => {
+        console.log("failed");
+      });
+  }).catch((err) => {
+    console.log(err);
+  })
 });
 
 //Conatct Form Submission
@@ -278,21 +305,32 @@ app.post("/NewPassword", async (req, res) => {
   const Email = { email: req.body.email };
   const email = req.body.email;
   await CustomerModel.findOne({ email }).then((result) => {
-    account = result; //CHANGE
-  });
-
-  const pass = {
-    createpassword: req.body.newpassword,
-    verifypassword: req.body.newpassword,
-  };
-  CustomerModel.updateOne(Email, pass)
-    .then((result) => {
-      LogedIn = 1;
-      sendAlert(res, "Password Was Updated", "/Home");
+      const pass = {
+        createpassword: req.body.newpassword,
+        verifypassword: req.body.newpassword,
+      };
+      CustomerModel.updateOne(Email, pass)
+        .then(() => {
+           let login = { loged: true };
+           LoginoptModel.updateOne({ email }, login)
+             .then(() => {
+               HOMEURL = result._id;
+               //  res.redirect("/AboutUs");
+                
+               sendAlert(res, "Login Successful", "/Home?id=" + HOMEURL);
+             })
+             .catch((err) => {
+               console.log("error1");
+               console.log("error");
+             });
+        }).catch((err) => {
+          console.log("error2");
+      console.log(err);
     })
-    .catch((err) => {
-      console.log("error");
-    });
+  }).catch((err) => {
+    console.log("error3");
+    console.log(err);
+  })
 });
 
 app.post("/RetailerSignUp", (req, res) => {

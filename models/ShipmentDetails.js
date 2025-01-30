@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const schema = mongoose.Schema;
 
 const Shipmentschema = new schema({
-    // email:{type:String,required:true},//it should fetch
+    email:{type:String,required:true},
     length: { type: Number, required: true },
     width: { type: Number, required: true },
     height: { type: Number, required: true },
@@ -19,6 +19,7 @@ const Shipmentschema = new schema({
     tstate: { type: String, required: true },
     pud: { type: Date, required: true },
     dda: { type: Date, required: true },
+    status:{type:Number,required:true}, //true antey current ani shipment complete ayipothey false ani chey 
     photo:{type:String,required:true},  //fileconstraints proper ga vadu 
 }, { timestamps: true });
 

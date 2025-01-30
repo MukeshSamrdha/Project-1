@@ -19,9 +19,9 @@
     </div>
     </div>
 
-    <div class="profileele1">
+    <div class="profileele1" >
    <p>Email: </p>
-   <h4><%= Result.email %></h4>
+   <h4 id="emailhead"><%= Result.email %></h4>
     </div>
 
     <div class="pione">
@@ -51,112 +51,6 @@
     </div>
   </div>
   <div class="outervd">
-<div id="viewdetails"> 
-    <!-- id undi not class -->
-    <div class="vdheading">
-        <h3>Shipment#123 Details</h3>
-        <button id="closex"><img src="/assets/x.svg"></button>
-    </div>
-    <h3>Status & Bids</h3> 
-    <div class="one">
-        <div class="vdele">
-            <p>Status</p>
-            <h4>In Transit</h4>
-        </div>
-        <div class="vdele">
-            <p>Number of Bids</p>
-            <h4>5</h4>
-        </div>
-    </div>
-    <h3>Package Dimensions</h3>
-     <div class="two">
-        <div class="vdele">
-            <p>Length</p>
-            <h4>1250</h4>
-        </div>
-        <div class="vdele">
-            <p>Width</p>
-            <h4>4520</h4>
-        </div>
-        <div class="vdele">
-            <p>Height</p>
-            <h4>452</h4>
-        </div>
-        <div class="vdele"> 
-             <p>Weight</p>
-             <h4>20</h4>
-        </div>
-    </div>
-    <h3>From Address</h3>
-    <div class="three">
-        <div class="vdele">
-            <p>House Number</p>
-            <h4>hj12456</h4>
-        </div>
-        <div class="vdele">
-            <p>Colony</p>
-            <h4>hfigh dsdsjn</h4>
-        </div>
-        <div class="vdele">
-            <p>City</p>
-            <h4>munnss</h4>
-        </div>
-         </div>
-        <div class="three">
-         <div class="vdele">
-            <p>pincode</p>
-            <h4>500100</h4>
-        </div>
-        <div class="vdele"> 
-             <p>State</p>
-             <h4>mahalems</h4>
-        </div>
-        </div>
-        <h3>To Address</h3>
-        <div class="three">
-        <div class="vdele">
-            <p>House Number</p>
-            <h4>dd dsmd 5</h4>
-        </div>
-        <div class="vdele">
-            <p>Colony</p>
-            <h4>snsmsms </h4>
-        </div>
-        <div class="vdele">
-            <p>City</p>
-            <h4>jncnjs </h4>
-        </div>
-         </div>
-        <div class="three">
-         <div class="vdele">
-            <p>pincode</p>
-            <h4>601242</h4>
-        </div>
-        <div class="vdele"> 
-             <p>State</p>
-             <h4>msmdsnnds</h4>
-        </div>
-        </div>
-        <h3>Shipping Dates</h3>
-        <div class="three">
-        <div class="datediv">
-            <img src="/assets/calendar-days.svg">
-            <div class="vdele"> 
-             <p>Pick Up Date</p>
-             <h4>20-45-2006</h4>
-            </div>
-        </div>
-        <div class="datediv">
-            <img src="/assets/calendar-days.svg">
-            <div class="vdele"> 
-             <p>Delivery Date</p>
-             <h4>20-85-6203</h4>
-            </div>
-        </div>
-        </div>
-        <h3>Description</h3>
-        <p>Sample Shipment Containing Frafile Items Handle With Care</p>
-</div>
 </div>
   <div id="main">
         <h1 id="mainheading">Ship Smarter,Not Harder</h1>
@@ -175,22 +69,136 @@
            </div>
            <div id="displaysection">
             <!-- render the data into divs here past are also their -->
-            <div class="di">
+             <% if(Shipment.length>1){%>
+             <% for(let i=0;i<Shipment.length;i++){ %>
+            <div class="di" id="di-<%=i%>">
                 <div class="headerdi">
                     <img src="/assets/package (1).svg">
-                    <h3>Shipment #1</h3>
+                    <h3>Shipment-<%=i+1%></h3>
                 </div>
                 <div id="twodiv">
                 <div>
-                <p>Bids: Demo</p>
-                <p>Status: Demo</p>
-                <p>Time Left: Demo</p>
+                <p>Bids:0</p>
+                <% if(Shipment[i].status=='1') {%>
+                <p>Status:In Transit</p>
+                <%}%>
+                <p>Time Left:2 days</p>
                 </div>
                 <div id="divbtndi">
-                    <button type="button" class="viewdetailsbtn">View Details</button>
+                    <button type="button" class="viewdetailsbtn" id="viewdetailsbtn<%=i+1%>">View Details</button>
                 </div>
                 </div>
             </div>
+            <div class="viewdetails" id="viewdetails<%=i+1%>">
+    <!-- id undi not class -->
+    <div class="vdheading">
+        <h3>Shipment-<%=i+1%> Details</h3>
+        <button class="closex"><img src="/assets/x.svg"></button>
+    </div>
+    <h3>Status & Bids</h3> 
+    <div class="one">
+        <div class="vdele">
+            <p>Status</p>
+            <h4>In Transit</h4>
+        </div>
+        <div class="vdele">
+            <p>Number of Bids</p>
+            <h4>0</h4>
+        </div>
+    </div>
+    <h3>Package Dimensions</h3>
+     <div class="two">
+        <div class="vdele">
+            <p>Length</p>
+            <h4><%=Shipment[i].length%>cm</h4>
+        </div>
+        <div class="vdele">
+            <p>Width</p>
+            <h4><%=Shipment[i].width%>cm</h4>
+        </div>
+        <div class="vdele">
+            <p>Height</p>
+            <h4><%=Shipment[i].height%>cm</h4>
+        </div>
+        <div class="vdele"> 
+             <p>Weight</p>
+             <h4><%=Shipment[i].weight%>kg</h4>
+        </div>
+    </div>
+    <h3>From Address</h3>
+    <div class="three">
+        <div class="vdele">
+            <p>House Number</p>
+            <h4><%=Shipment[i].fhno%></h4>
+        </div>
+        <div class="vdele">
+            <p>Colony</p>
+            <h4><%=Shipment[i].fcolony%></h4>
+        </div>
+        <div class="vdele">
+            <p>City</p>
+            <h4><%=Shipment[i].fcity%></h4>
+        </div>
+         </div>
+        <div class="three">
+         <div class="vdele">
+            <p>pincode</p>
+            <h4><%=Shipment[i].fpincode%></h4>
+        </div>
+        <div class="vdele"> 
+             <p>State</p>
+             <h4><%=Shipment[i].fstate%></h4>
+        </div>
+        </div>
+        <h3>To Address</h3>
+        <div class="three">
+        <div class="vdele">
+            <p>House Number</p>
+            <h4><%=Shipment[i].thno%></h4>
+        </div>
+        <div class="vdele">
+            <p>Colony</p>
+            <h4><%=Shipment[i].tcolony%> </h4>
+        </div>
+        <div class="vdele">
+            <p>City</p>
+            <h4><%=Shipment[i].tcity%> </h4>
+        </div>
+         </div>
+        <div class="three">
+         <div class="vdele">
+            <p>pincode</p>
+            <h4><%=Shipment[i].tpincode%></h4>
+        </div>
+        <div class="vdele"> 
+             <p>State</p>
+             <h4><%=Shipment[i].tstate%></h4>
+        </div>
+        </div>
+        <h3>Shipping Dates</h3>
+        <div class="three">
+        <div class="datediv">
+            <img src="/assets/calendar-days.svg">
+            <div class="vdele"> 
+             <p>Pick Up Date</p>
+             <h4><%=Shipment[i].pud%></h4>
+            </div>
+        </div>
+        <div class="datediv">
+            <img src="/assets/calendar-days.svg">
+            <div class="vdele"> 
+             <p>Delivery Date</p>
+             <h4><%=Shipment[i].dda%></h4>
+            </div>
+        </div>
+        </div>
+</div>
+            <% } %>
+            <%}else{ %>
+                <div id="noshipment">
+                    <h2>No Shipments Yet</h2>
+                </div>
+                <% } %>
            </div>
       </div>
    <section id="section1">
@@ -198,6 +206,7 @@
     <form method="post" action="/SubmitShipment">
         <h1>Submit Your Shipment</h1>
         <!-- <input type="email" name="email" id="email" required> -->
+         <input type="email" id="shipmentemail" name="email" value="<%=Result.email %>" required>
         <div class="inputdiv">
             <div class="inputele">
             <label for="length">Length(cm)</label>
@@ -298,6 +307,7 @@
             <input type="date" id="dda" name="dda" required >
             </div>
         </div>
+        <input type="number" name="status" id="checkbox" value="1">
         <textarea id="description" placeholder="Description" name="description" required></textarea>
         <label for="photo">Photos</label>
         <input type="file" id="photos" name="photo" required>
