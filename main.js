@@ -130,6 +130,18 @@ app.get("/ForgotPassword", (req, res) => {
 app.get("/otp", (req, res) => {
   res.status(200).json({ OTP: otp });
 });
+app.get("/ShipmentArea", (req, res) => {
+  let r = {
+    fromaddress: null,
+    toaddress: null,
+    weightrange: null,
+  };
+  ShipmentModel.find().then((result) => {
+     res.render("ShipmentArea", { title: "ShipmentArea",Shipment:result,Form:r});
+  }).catch((err) => {
+    console.log(err);
+  })
+})
 app.get("/ShiperDashboard", (req, res) => {
   res.render("ShiperDashboard", { title: "ShiperDashboard" });
 });
@@ -346,6 +358,14 @@ app.post("/RetailerSignUp", (req, res) => {
   }
 });
 
+app.post("/ShipmentArea", (req, res) => {
+  //no need model if u are not stroing the details
+  ShipmentModel.find().then((result) => {
+      res.render("ShipmentArea", { title: "ShipmentArea",Shipment:result,Form:req.body });
+  }).catch((err) => {
+    console.log(err);
+  })
+});
 //start
 //post for changing mode
 //----------------------------------------------------------------

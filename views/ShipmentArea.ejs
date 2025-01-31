@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('../partials/header.ejs') %>
+<link rel="stylesheet" href="/css/ShipmentArea.css">
+</head>
+<body>
+    <%- include('../partials/navbar.ejs') %>
+    <div id="main">
+        <form action="/ShipmentArea" method="post">
+            <div id="flexdiv">
+            <div class="inputdiv">
+            <label for="fromaddress">From Address</label>
+            <input type="text" id="fromaddress" name="fromaddress" placeholder="Ex:Hyderabad" required>
+            </div>
+            <div class="inputdiv">
+            <label for="toaddress">To Address</label>
+            <input type="text" id="toaddress" name="toaddress" placeholder="Ex:Mumbai" required>
+            </div>
+            </div>
+            <div id="filterdiv">
+          <label for="weightrange">Weight Range(Kg)</label>
+          <br>
+            <input type="range" name="weightrange" id="weightrange" min="0" max="50000" value="5000" step="10" oninput="updateSlider(this)">
+            <span id="slidervalue">5000 kg</span>
+            <script>
+                function updateSlider(Slider){
+                    document.querySelector("#slidervalue").innerHTML=Slider.value +"Kg";
+                }
+            </script>
+            </div>
+            <div id="submitbtndiv"><button id="submitbtn">Apply Filter</button></div>
+        </form>
+        <div id="Shipmentdisplay">
+            <% let count=0 %>
+               <% for(let i=0;i<Shipment.length;i++){ %>
+                <% if(Shipment[i].fcity==Form.fromaddress && Shipment[i].tcity==Form.toaddress && Shipment[i].weight<=Form.weightrange){%>
+                    <% count++; %>
+                 <div class="shipmentdiv">
+                    <div class="shipmentdiv1">
+                      <h3 class="shipmentdiv1head">
+                        ShipmentID-<%=Shipment[i]._id%>
+                            </h3>
+                        <div>
+                            <h3>₹5000</h3>
+                            <p>Current Bid</p>
+                        </div>
+                    </div>
+                    <div class="shipmentdiv2">
+                        <P>Dimensions:<%=Shipment[i].length%>x<%=Shipment[i].width%>x<%=Shipment[i].height%>cm</P>
+                        <p>Weight:<%=Shipment[i].weight%>kg</p>
+                    </div>
+                    <hr>
+                    <div class="shipmentdiv2">
+                        <P>Pickup:<%=Shipment[i].fcity%>,<%=Shipment[i].fstate%></P>
+                        <p>Destination:<%=Shipment[i].tcity%>,<%=Shipment[i].tstate%></p>
+                    </div>
+                    <div class="shipmentdiv3">
+                        <button type="submit" class="sipmentbtn">Place Bid</button>
+                    </div>
+                </div>
+                <% } %>
+            <% }if(count==0){%>
+                <div id="noshipment">
+                    <img src="/assets/package (1).svg">
+                    <h4>No shipments are available based on the applied constraints. Please try selecting a different weight range or location</h4>
+                 </div>
+           <% }%>
+        </div>
+    </div>
+    <%- include('../partials/footer.ejs') %>
+</body>
+<script src="/js/ShipmentArea.js"></script>
+</html>
