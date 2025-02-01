@@ -131,7 +131,7 @@
     justify-content: space-around;
 }
 .body3btns{
-   padding:1.5% 6%;
+   padding:2vh 4vh;
    border-radius: 20px;
    font-size: 1.1rem;
    background-color:#0284C7;
@@ -156,12 +156,11 @@
     display: none;
 }
 #profileinfo button{
-   background-color: #0284C7;
-   padding:1vh;
-   font-size:1rem;
-   width:40%;
-   color:white;
-   border-radius:25px;
+    background-color: #0284C7;
+    padding:1vh 3vh; 
+    border-radius:20px;
+    font-size:1.1rem;
+    color:white;
 }
 #profileinfo div{
     display:flex;

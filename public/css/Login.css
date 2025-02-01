@@ -16,6 +16,7 @@ body{
     justify-content: space-around;
     width:20%;
     margin:2%;
+    display:none;
 }
 #last{
     display:flex;
@@ -64,7 +65,7 @@ body{
 }
 #btnclass{
     display: flex;
-    margin-left:19vw;
+    justify-content: center;
 }
 .btnele{
      padding:2vh 4vw;

@@ -25,22 +25,6 @@ btn.forEach((ele) => {
     })
 })
 
-document.getElementById("learnmore").addEventListener("click", () => {
-    document.getElementById("loading").style.display = "block";
-    setTimeout(() => {
-         window.location.href = "/AboutUs";
-   }, 1000); 
-});
-// document.querySelectorAll(".signinbtn").forEach((ele) => {
-//   ele.addEventListener("click", () => {
-//     document.getElementById("loading").style.display = "block";
-//      setTimeout(() => {
-//        window.location.href = "/Login";
-//      },1000); 
-//   })
-// })
-//the above is the loading animation of the navigation page
-
 document.querySelectorAll(".togglebtnp").forEach((ele) => {
   ele.addEventListener("click", () => {
     console.log("HI");

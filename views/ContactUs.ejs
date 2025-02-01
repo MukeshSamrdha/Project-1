@@ -5,18 +5,10 @@
 </head>
 <body>
     <%- include('../partials/navbar.ejs') %>
-    <div id="initiallogin">
-     <div id="beforelogin">
-        <h2 class="beforeloginheading">To interact with this page, please log in!</h2>
-        <div id="beforelogindiv">
-          <button class="beforelogindivele" onclick="window.document.location.href='/Login'">Go To Login Page</button>
-        </div>
-      </div>
-      </div>
        <div id="profileinfo">
       <p>For profile details, please go to the Home page.</p>
       <div>
-      <button onclick="document.location.href='/Home'">Home</button>
+     <a  id="homeredirectbtn"><button onclick="document.location.href='/Home'" id="profileinfobtn">Home</button></a>
       </div>
     </div>
     <div id="main">

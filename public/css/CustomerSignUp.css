@@ -14,6 +14,7 @@
     justify-content: space-around;
     width:20%;
     margin:2%;
+    display:none;
 }
 #last{
     display:flex;
@@ -93,4 +94,7 @@ input{
 }
 #submit:hover{
     background-color: #0369A1;
+}
+#mode{
+    display:none;
 }

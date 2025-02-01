@@ -8,7 +8,7 @@
     <div id="profileinfo">
       <p>For profile details, please go to the Home page.</p>
       <div>
-      <button onclick="document.location.href='/Home'">Home</button>
+      <a  id="homeredirectbtn"><button onclick="document.location.href='/Home'" id="profileinfobtn">Home</button></a>
       </div>
     </div>
       <div id="main">
@@ -70,8 +70,7 @@
         <h2 class="bodyheading">Join the ShipIt Revolution</h2>
         <p>Whether you're a customer looking for competitive shipping rates or an individual shipper seeking new opportunities,ShipIt is here to tramsform your shipping experience</p>
         <div id="body3btn">
-          <button class="body3btns" onclick="window.document.location.href='/CustomerSignUp'">Sign Up as a Customer</button>
-          <button class="body3btns" onclick="window.document.location.href='/RetailerSignUp'">Become a Shipper</button>
+          <a id="homebtn"><button class="body3btns" >Start Shiping</button></a>
         </div>
       </div>
     <%- include('../partials/footer.ejs') %>

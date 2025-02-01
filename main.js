@@ -146,6 +146,18 @@ app.get("/ShiperDashboard", (req, res) => {
   res.render("ShiperDashboard", { title: "ShiperDashboard" });
 });
 
+app.get("/Mode", (req, res) => {
+  const urlParams = new URLSearchParams(req.query);
+  const id = urlParams.get("id");
+  let _id = new mongoose.Types.ObjectId(id);
+  CustomerModel.findOne({ _id }).then((Customer) => {
+    let mode = Customer.mode;
+    res.status(200).send({ Mode: mode });
+  }).catch((err) => {
+    console.log(err);
+  })
+})
+
 //post requests  //processing
 //LOGOUT
 app.post("/LogedOut", (req, res) => { //change
@@ -366,6 +378,18 @@ app.post("/ShipmentArea", (req, res) => {
     console.log(err);
   })
 });
+
+app.post("/Mode", (req, res) => {
+  const urlParams = new URLSearchParams(req.query);4
+  const id = urlParams.get('id');
+  const _id = new mongoose.Types.ObjectId(id);
+  const Mode = { mode: req.body.Mode };
+  CustomerModel.updateOne({ _id: _id }, Mode).then((result) => {
+    res.status(200).send("Successful");
+  }).catch((err) => {
+    console.log(err);
+  })
+})
 //start
 //post for changing mode
 //----------------------------------------------------------------

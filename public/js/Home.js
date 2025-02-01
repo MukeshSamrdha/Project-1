@@ -22,19 +22,10 @@ btns.forEach((ele) => {
         }
     })
 })
-document.querySelector("#homelink").innerHTML = "Home";
-document.querySelector("#homelink").addEventListener("click", () => {
-  event.preventDefault();
-  let id = redirect();
-  fetch("/Home?id=" + id, {
-    method: "GET",
-    headers:{"content-type":"application/json"}
-  }).then(() => {
-  }).catch((err) => {
-    console.log(err);
-  })
-});
-// LogedIn and reult should be sent ;
+let id = redirect();
+document.querySelector("#aboutus").href = "/AboutUs?id=" + id;
+document.querySelector("#contactus").href = "/ContactUs?id=" + id;
+document.querySelector("#homelink").href = "/Home?id=" + id;
 let p = 1;
 let profilebtn = document.querySelector("#profilebtn");
 let profileinfo = document.querySelector("#profileinfo");
@@ -59,8 +50,6 @@ logout.addEventListener("click", () => {
   },5000);
   setTimeout(() => {
     let Logout = false; 
-    // Logs success
-    // console.log("Hello");
     let email = document.querySelector("#emailhead").innerHTML;
     fetch("http://localhost:7000/LogedOut",{
       method: "POST",
@@ -69,19 +58,17 @@ logout.addEventListener("click", () => {
       },
       body: JSON.stringify({
         email:email,
-        loged: Logout // Ensure 'Logout' is defined before this fetch call
+        loged: Logout 
       }),
     })
       .then((result) => {
         if (!result.ok) {
           throw new Error(`HTTP error! status: ${result.status}`);
         }
-       // console.log("HI"); // Logs "HI" on success
-         window.document.location.href = "/Login"; // Redirects to /Login
+         window.document.location.href = "/Login"; 
       })
       .catch((err) => {
         console.error("Error:", err);
-       // console.log("failed"); // Logs failure
       });
 
   },2000);
@@ -105,56 +92,70 @@ viewdetailsbtn.forEach((ele) => {
     document.querySelector(newid).style.display = "block";
   })
 })
-
-let mode = 0; //li
-let modebtn = document.querySelector("#modebtn");
-modebtn.addEventListener("click", () => {
-  if (mode == 0) {
-    mode = 1;
+let mode;
+async function getmode(){  //onload
+  return fetch("/Mode?id=" + id, {
+    method: "GET",
+    headers: { "Content-Type": "Application/JSON" },
+  }).then((result) => result.json()).then((Answer) => {
+    return Answer.Mode;
+  })
+}
+async function mode1() {
+  document.querySelector("#loading").style.display = "block";
+  setTimeout(()=>{
+   document.querySelector("#loading").style.display = "none";
+  }, 3000);
+  mode = await getmode();
+  changemode(mode);
+}
+document.addEventListener("DOMContentLoaded", () => {
+  mode1();
+})
+function changemode(mode){
+  if (mode == 1) {
      document.querySelector("#modebtnimg").src = "/assets/sun-moon.svg";
-    document.querySelector("body").style.backgroundColor = "black";
-    document.querySelectorAll("h1").forEach((ele) => {
-      ele.style.color = "white";
-    });
-    document.querySelectorAll("h2").forEach((ele) => {
-      ele.style.color = "white";
-    });
-    document.querySelectorAll("h3").forEach((ele) => {
-      ele.style.color = "white";
-    });
-    document.querySelectorAll("h4").forEach((ele) => {
-      ele.style.color = "white";
-    });
-    document.querySelectorAll("p").forEach((ele) => {
-      ele.style.color = "white";
-    });
-        document.querySelector("#main").style.backgroundColor = "#082F49";
-    document.querySelectorAll("a").forEach((ele) => {
-      ele.style.color = "white";
-      ele.addEventListener("mouseover", () => {
-        ele.style.color = "#0369A1";
-      });
-      ele.addEventListener("mouseout", () => {
-        ele.style.color = "white";
-      });
-    });
-      document.querySelectorAll("label").forEach((ele) => {
-          ele.style.color = "white";
-      })
-      document.querySelector("#yourshipments").style.backgroundColor = "#111827";
-      document.querySelectorAll(".di").forEach((ele) => {
-          ele.style.backgroundColor = "black";
-      })
-      document.querySelector("#imghead").style.backgroundColor =
-          "rgb(63, 29, 13)";
-    document.querySelector("#profileinfo").style.backgroundColor = "black";
-    document.querySelectorAll(".viewdetails").forEach((ele) => {
-      ele.style.backgroundColor = "black";
-    })
-    document.querySelector("#noshipment").style.backgroundColor = "black";
+     document.querySelector("body").style.backgroundColor = "black";
+     document.querySelectorAll("h1").forEach((ele) => {
+       ele.style.color = "white";
+     });
+     document.querySelectorAll("h2").forEach((ele) => {
+       ele.style.color = "white";
+     });
+     document.querySelectorAll("h3").forEach((ele) => {
+       ele.style.color = "white";
+     });
+     document.querySelectorAll("h4").forEach((ele) => {
+       ele.style.color = "white";
+     });
+     document.querySelectorAll("p").forEach((ele) => {
+       ele.style.color = "white";
+     });
+     document.querySelector("#main").style.backgroundColor = "#082F49";
+     document.querySelectorAll("a").forEach((ele) => {
+       ele.style.color = "white";
+       ele.addEventListener("mouseover", () => {
+         ele.style.color = "#0369A1";
+       });
+       ele.addEventListener("mouseout", () => {
+         ele.style.color = "white";
+       });
+     });
+     document.querySelectorAll("label").forEach((ele) => {
+       ele.style.color = "white";
+     });
+     document.querySelector("#yourshipments").style.backgroundColor = "#111827";
+     document.querySelectorAll(".di").forEach((ele) => {
+       ele.style.backgroundColor = "black";
+     });
+     document.querySelector("#imghead").style.backgroundColor =
+       "rgb(63, 29, 13)";
+     document.querySelector("#profileinfo").style.backgroundColor = "black";
+     document.querySelectorAll(".viewdetails").forEach((ele) => {
+       ele.style.backgroundColor = "black";
+     });
   } else {
-    mode = 0;
-     document.querySelector("#modebtnimg").src = "/assets/moon.svg";
+    document.querySelector("#modebtnimg").src = "/assets/moon.svg";
     document.querySelector("body").style.backgroundColor = "white";
     document.querySelectorAll("h1").forEach((ele) => {
       ele.style.color = "black";
@@ -165,13 +166,13 @@ modebtn.addEventListener("click", () => {
     document.querySelectorAll("h3").forEach((ele) => {
       ele.style.color = "black";
     });
-      document.querySelectorAll("h4").forEach((ele) => {
-        ele.style.color = "black";
-      });
+    document.querySelectorAll("h4").forEach((ele) => {
+      ele.style.color = "black";
+    });
     document.querySelectorAll("p").forEach((ele) => {
       ele.style.color = "black";
     });
-       document.querySelector("#main").style.backgroundColor = "#F0F9FF";
+    document.querySelector("#main").style.backgroundColor = "#F0F9FF";
     document.querySelectorAll("a").forEach((ele) => {
       ele.style.color = "black";
       ele.addEventListener("mouseover", () => {
@@ -181,28 +182,135 @@ modebtn.addEventListener("click", () => {
         ele.style.color = "black";
       });
     });
-       document.querySelectorAll("label").forEach((ele) => {
-         ele.style.color = "black";
-       });
-      document.querySelector("#yourshipments").style.backgroundColor =
-        "rgb(217, 217, 217)";
-      document.querySelectorAll(".di").forEach((ele) => {
-        ele.style.backgroundColor = "white";
-      });
-       document.querySelector("#imghead").style.backgroundColor =
-          "rgb(255, 249, 229)";
+    document.querySelectorAll("label").forEach((ele) => {
+      ele.style.color = "black";
+    });
+    document.querySelector("#yourshipments").style.backgroundColor =
+      "rgb(217, 217, 217)";
+    document.querySelectorAll(".di").forEach((ele) => {
+      ele.style.backgroundColor = "white";
+    });
+    document.querySelector("#imghead").style.backgroundColor =
+      "rgb(255, 249, 229)";
     document.querySelector("#profileinfo").style.backgroundColor = "white";
     document.querySelectorAll(".viewdetails").forEach((ele) => {
       ele.style.backgroundColor = "white";
-    })
-    document.querySelector("#noshipment").style.backgroundColor = "white";
+    });        
   }
-});
-let submitbtnshipment = document.querySelector("#submitbtnshipment");
-submitbtnshipment.addEventListener("click", (req, res) => {
-  let result;
-  fetch('/api/email', (req, res) => {
-    result = res.globalemail;
-    console.log(result);
+}
+
+function changemodeclick(mode){
+  if (mode == "0") {
+    mode = "1";
+    fetch("/Mode?id=" + id, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ Mode: mode }),
     })
+      .then(() => {
+        document.querySelector("#modebtnimg").src = "/assets/sun-moon.svg";
+        document.querySelector("body").style.backgroundColor = "black";
+        document.querySelectorAll("h1").forEach((ele) => {
+          ele.style.color = "white";
+        });
+        document.querySelectorAll("h2").forEach((ele) => {
+          ele.style.color = "white";
+        });
+        document.querySelectorAll("h3").forEach((ele) => {
+          ele.style.color = "white";
+        });
+        document.querySelectorAll("h4").forEach((ele) => {
+          ele.style.color = "white";
+        });
+        document.querySelectorAll("p").forEach((ele) => {
+          ele.style.color = "white";
+        });
+        document.querySelector("#main").style.backgroundColor = "#082F49";
+        document.querySelectorAll("a").forEach((ele) => {
+          ele.style.color = "white";
+          ele.addEventListener("mouseover", () => {
+            ele.style.color = "#0369A1";
+          });
+          ele.addEventListener("mouseout", () => {
+            ele.style.color = "white";
+          });
+        });
+        document.querySelectorAll("label").forEach((ele) => {
+          ele.style.color = "white";
+        });
+        document.querySelector("#yourshipments").style.backgroundColor =
+          "#111827";
+        document.querySelectorAll(".di").forEach((ele) => {
+          ele.style.backgroundColor = "black";
+        });
+        document.querySelector("#imghead").style.backgroundColor =
+          "rgb(63, 29, 13)";
+        document.querySelector("#profileinfo").style.backgroundColor = "black";
+        document.querySelectorAll(".viewdetails").forEach((ele) => {
+          ele.style.backgroundColor = "black";
+        });
+      })
+      .catch((err) => {
+         console.log("HI");
+        console.log(err);
+      });
+  } else {
+    mode = "0";
+    fetch("/Mode?id=" + id, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ Mode: mode }),
+    }).then(() => {
+        document.querySelector("#modebtnimg").src = "/assets/moon.svg";
+        document.querySelector("body").style.backgroundColor = "white";
+        document.querySelectorAll("h1").forEach((ele) => {
+          ele.style.color = "black";
+        });
+        document.querySelectorAll("h2").forEach((ele) => {
+          ele.style.color = "black";
+        });
+        document.querySelectorAll("h3").forEach((ele) => {
+          ele.style.color = "black";
+        });
+        document.querySelectorAll("h4").forEach((ele) => {
+          ele.style.color = "black";
+        });
+        document.querySelectorAll("p").forEach((ele) => {
+          ele.style.color = "black";
+        });
+        document.querySelector("#main").style.backgroundColor = "#F0F9FF";
+        document.querySelectorAll("a").forEach((ele) => {
+          ele.style.color = "black";
+          ele.addEventListener("mouseover", () => {
+            ele.style.color = "#0369A1";
+          });
+          ele.addEventListener("mouseout", () => {
+            ele.style.color = "black";
+          });
+        });
+        document.querySelectorAll("label").forEach((ele) => {
+          ele.style.color = "black";
+        });
+        document.querySelector("#yourshipments").style.backgroundColor =
+          "rgb(217, 217, 217)";
+        document.querySelectorAll(".di").forEach((ele) => {
+          ele.style.backgroundColor = "white";
+        });
+        document.querySelector("#imghead").style.backgroundColor =
+          "rgb(255, 249, 229)";
+        document.querySelector("#profileinfo").style.backgroundColor = "white";
+        document.querySelectorAll(".viewdetails").forEach((ele) => {
+          ele.style.backgroundColor = "white";
+        });              
+      })
+      .catch((err) => {
+        console.log("HI");
+        console.log(err);
+      });
+  }
+  return mode;
+}
+let modebtn = document.querySelector("#modebtn");
+modebtn.addEventListener("click", () => {
+  mode=changemodeclick(mode);
 });

@@ -105,46 +105,9 @@ form button:hover{
           <button class="beforelogindivele" onclick="window.document.location.href='/Login'">Go To Login Page</button>
         </div>
       </div> */
-#initiallogin{
-    display:flex;
-    justify-content: center;
-    align-items:center;
-    backdrop-filter: blur(10px);
-    position: absolute;
-    height:100vh;
-    width:100vw;
-    /* background-color: aqua; */
-}
 /* body{
     overflow: hidden;
 } */
-#beforelogin{
-    box-shadow:0 0 10px 0 grey;
-    margin:2vh 20vw;
-    padding:4vh 8vw;
-    border-radius:20px;
-    background-color:rgba(255,255,255,1);
-    /* backdrop-filter: blur(5px);
-    color:white; */
-}
-#beforelogin h2{
-    text-align:center;
-}
-#beforelogindiv{
-    display:flex;
-    justify-content: center;
-}
-#beforelogindiv button{
-    padding:1vh 2vh;
-    color:white;
-    background-color: #0284C7;
-    font-size:1.2rem;
-    font-weight:600;
-    border-radius:25px;
-}
-#beforelogindiv button:hover{
-    background-color: #0369A1;
-}
 #profileinfo{
     position: absolute;
     background-color: white;
@@ -160,12 +123,11 @@ form button:hover{
     display: none;
 }
 #profileinfo button{
-   background-color: #0284C7;
-   padding:1vh;
-   font-size:1rem;
-   width:40%;
-   color:white;
-   border-radius:25px;
+    background-color: #0284C7;
+    padding:1vh 3vh; 
+    border-radius:20px;
+    font-size:1.1rem;
+    color:white;
 }
 #profileinfo div{
     display:flex;
