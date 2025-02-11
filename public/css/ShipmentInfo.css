@@ -1,0 +1,187 @@
+html{
+    scroll-behavior:smooth;
+}
+#navbar{
+    display: flex;
+    justify-content: space-between;
+}
+body{
+    scroll-behavior: smooth;
+}
+#first{
+    display:flex;
+}
+#middle{
+    display:flex;
+    justify-content: space-around;
+    width:20%;
+    margin:2%;
+    display:none;
+}
+#last{
+    display:flex;
+    justify-content: space-around;
+    margin:1.5% 0;
+}
+.middleele{
+    font-size:120%;
+    overflow: visible;
+}
+.navbtn{
+    padding:1vh;
+    border-radius:50%;
+    border-color:rgb(57, 57, 58);
+    background-color:white;
+}
+.navbtn:hover{
+    background-color:rgb(249, 249, 249);
+}
+.middleele a{
+    color:black;
+    text-decoration: none;
+    transition:transform 0.3s linear 0.05s;  
+}
+.middleele a:hover{
+    color:#0369A1;
+    transform: translateY(5px);
+}
+hr{
+    margin-bottom:-2vh;
+}
+nav{
+    margin-bottom:-3vh;
+}
+.headingbtnnav{
+    background-color: #0284C7;
+    color: white;
+    font-size:1.1rem;
+    margin-left:1vh;
+    padding: 0vh 2vh;
+    border-radius: 10px;
+}
+.headingbtnnav:hover{
+    background-color: #0369A1;
+}
+#mainheading{
+    text-align: center;
+    margin-bottom:2vh;
+}
+#main{
+    background-color:#F0F9FF;
+    padding:0vh 6vh;
+    border-radius:20px;
+    margin-top:-3vh;
+    margin-bottom:2vh;
+    padding-bottom:4vh;
+}
+#cutoffdiv{
+    display:flex;
+    margin-top:4vh;
+    justify-content:center;
+    align-items: center;
+}
+#notice{
+    background-color:white;
+    padding:2vh 4vh;
+    box-shadow: 0 0 10px 0 grey;
+    border-radius:10px;
+    margin-top:3vh;
+}
+#biddinginfomain{
+ display:flex;
+ justify-content: space-between;
+ align-items: center;
+}
+#biddinginfo h2{
+    margin-left:2vh;
+}
+.biddinginfodiv{
+ display:flex;
+ flex-direction: column;
+ align-items: center;
+ justify-content: center;
+ background-color: white;
+ padding:1vh 4vh;
+ margin-top:4vh;
+ box-shadow:0 0 10px 0 grey;
+ width:27%;
+ border-radius:10px;
+}
+.biddinginfodiv h1{
+    margin-top:-1vh;
+}
+#shipmentdetailsmain{
+   display:flex;
+   justify-content: space-between;
+   align-items: center;
+}
+#shipmentdetails h2{
+    margin-left:2vh;
+}
+.shipmentdetailsdiv{
+  display:flex;
+ flex-direction: column;
+ justify-content: center;
+ padding:1vh 4vh;
+ background-color: white;
+ box-shadow:0 0 10px 0 grey;
+ width:27%;
+ border-radius:10px;
+ margin-top:4vh;
+}
+.shipmentdetailsdiv p{
+ margin-top:-1vh;
+}
+#placebid{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+#placebidmain{
+    background-color: white;
+    padding:4vh 4vh;
+    width:30%;
+    border-radius:10px;
+    box-shadow: 0 0 10px 0 grey;
+    padding-bottom:4vh;
+    margin-top:3vh;
+}
+#placebidmain h2{
+ margin-top:-1vh;
+ text-align:center;
+}
+form{
+    display:flex;
+    flex-direction: column;
+    justify-content:center ;
+}
+input{
+    padding:1vh;
+    font-size:1.1rem;
+    border-radius:10px;
+    border:1px solid rgb(194, 192, 192);
+}
+#placebidbtn{
+    background-color: #0284C7;
+    color:white;
+    padding:1vh;
+    border-radius:15px;
+    font-size:1.1rem;
+    font-weight:600;
+}
+#placebidbtn:hover{
+    background-color: #0369A1;
+}
+#auctionended{
+    display:flex;
+    justify-content: center;
+    margin-top:4vh;
+}
+#auctionendedmain{
+    padding:2vh 4vh;
+    background-color: white;
+    box-shadow:0 0 10px 0 grey;
+    border-radius:10px;
+    display:none;
+}

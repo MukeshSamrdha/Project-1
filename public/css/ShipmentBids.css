@@ -1,0 +1,133 @@
+html{
+    scroll-behavior:smooth;
+}
+#navbar{
+    display: flex;
+    justify-content: space-between;
+}
+body{
+    scroll-behavior: smooth;
+}
+#first{
+    display:flex;
+}
+#middle{
+    display:flex;
+    justify-content: space-around;
+    width:20%;
+    margin:2%;
+    display:none;
+}
+#last{
+    display:flex;
+    justify-content: space-around;
+    width:6%;
+    margin:1.5% 0%;
+    margin-right:2vh;
+}
+.middleele{
+    font-size:120%;
+    overflow: visible;
+}
+.navbtn{
+    border-radius:50%;
+    border-color:rgb(57, 57, 58);
+    background-color:white;
+}
+.navbtn:hover{
+    background-color:rgb(249, 249, 249);
+}
+.middleele a{
+    color:black;
+    text-decoration: none;
+    transition:transform 0.3s linear 0.05s;  
+}
+.middleele a:hover{
+    color:#0369A1;
+    transform: translateY(5px);
+}
+h2{
+    margin-top:-2vh;
+    text-align:center;
+}
+.shiperbids{
+    margin-bottom:2vh;
+    margin-top:2vh;
+    margin-right:20%;
+    margin-left:20%;
+    padding:2vh;
+    background-color:#F0F9FF;
+    border-radius:10px;
+    box-shadow:0 0 10px 0 grey;
+}
+.info{
+    display:flex;
+    flex-direction: column;
+}
+.info p{
+    margin-bottom:0.5vh;
+    font-weight: 500;
+}
+#btnsec{
+    display:flex;
+    justify-content: center;
+    margin-bottom:4vh;
+}
+#btnsec button{
+    padding:1vh 3vh;
+    font-size:1.1rem;
+    background-color:#0284C7;
+    color:white;
+    border:0.1 solid #000000;
+}
+#btnsec button:hover{
+    background-color: #0369A1;
+}
+#ratings{
+  border-top-left-radius:20px;
+  border-bottom-left-radius:20px;
+}
+#price{
+  border-top-right-radius:20px;
+  border-bottom-right-radius:20px;
+}
+.acceptbtn{
+  display: flex;
+  justify-content: center;
+}
+.acceptbid{
+   width:60%;
+   padding:1vh;
+   color:white;
+   background-color: #0284C7;
+   border-radius:15px;
+   font-size:1rem;
+   font-weight:600;
+}
+.acceptbid:hover{
+    background-color: #0369A1;
+}
+#notedivmain{
+    display:flex;
+    justify-content: center;
+}
+#notediv{
+    background-color: #F0F9FF;
+    padding:2vh 4vh;
+    margin-bottom:4vh;
+    border-radius:10px;
+    box-shadow: 0 0 10px 0 grey;
+}
+#displaysection{
+    margin-bottom:4vh;
+}
+#homebtn{
+    background-color: #0284C7;
+    color:white;
+    font-size:1.1rem;
+    margin-left:1vh;
+    border-radius: 10px;
+}
+#homebtn:hover{
+    background-color: #0369A1;
+}

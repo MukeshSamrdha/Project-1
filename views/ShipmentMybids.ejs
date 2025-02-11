@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('../partials/header.ejs') %>
+<link rel="stylesheet" href="/css/ShipmentMybids.css">
+</head>
+<body>
+     <nav>
+    <div id="navbar">
+    <div id="first">
+      <img src="/assets/ship (1).svg" height="80%">
+      <h1 style="font-size:200%">ShipIt</h1>
+    </div>
+    <div id="middle">
+        <div class="middleele"><a  href="/ShipmentDashboard" id="homelink">Home</a></div>
+         <div class="middleele"><a  href="/AboutUsR" id="aboutus">AboutUs</a></div>
+          <div class="middleele"><a  href="/ContactUsR" id="contactus">ContactUs</a></div>
+    </div>
+    <div id="last">
+      <button class="navbtn" id="modebtn"><img src="assets/moon.svg" id="modebtnimg"></button>
+      <button class="headingbtnnav" id="shiperdashboard">Shiperdashboard</button>
+      <button class="headingbtnnav" id="shiperarea">Shipment Area</button>
+    </div>
+    </div>
+</nav>
+  <h2>My Bids</h2>
+  <div id="noticemain">
+  <div id="notice">
+    <h3>Notice</h3>
+    <ul>
+      <li style="color:rgb(30, 232, 30)">If the button color is green, the bid is yours. It's better not to place another offer.</li>
+       <li style="color:red">If the button color is red, the bid belongs to someone else. It's better to place another offer.</li>
+    </ul>
+  </div>
+  </div>
+  <div id="displaysectionmain">
+    <% let k=0; %>
+    <% for(let i=0;i<Shipment.length;i++){%>
+      <% if(Shipment[i].status==1){%>
+        <% k=1; %>
+           <div class="element" id="element<%=Shipment[i].shipmentid%>">
+      <div class="head">
+        <h3 class="shipmentid" id="<%=Shipment[i].shipmentid%>">ShipmentID-<%=Shipment[i].shipmentid%></h3>
+        <p>Status:<b>Active</b></p>
+      </div>
+      <div class="body">
+       <p id="dimensions<%=Shipment[i].shipmentid%>">Dimensions:</p>
+       <p id="weight<%=Shipment[i].shipmentid%>">Weight:</p>
+      </div>
+      <hr>
+      <div class="body">
+       <p id="pickup<%=Shipment[i].shipmentid%>">PickUp:</p>
+       <p id="destination<%=Shipment[i].shipmentid%>">Destination:</p>
+      </div>
+      <hr>
+       <div class="body">
+         <p id="cbp<%=Shipment[i].shipmentid%>">Current BestPrice:</p>
+         <p id="ybp<%=Shipment[i].shipmentid%>">Your BestPrice:<%= Shipment[i].bestprice %></p>
+      </div>
+      <div class="tail">
+        <button class="bidbtn" id="bidbtn<%=Shipment[i].shipmentid%>">BID AGAIN</button> 
+        <!-- id include cheyali ikkada  -->
+      </div>
+    </div>
+      <%}%>
+    <%}%>
+   <% if(k==0){%>
+      <div id="nobid">
+        <img src="/assets/package (1).svg">
+        <P>You don't have any active bids/shipments,please go to ShipmentArea to bid on shipments</P>
+      </div>
+   <%}%>
+  </div>
+  <div id="loading" style="display: none;">
+    <img src="/assets/Broken circle.gif" alt="Loading..." />
+</div>
+</body>
+<script src="/js/ShipmentMybids.js"></script>
+</html>

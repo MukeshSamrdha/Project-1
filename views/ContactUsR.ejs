@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
     <%- include('../partials/header.ejs') %>
-    <link rel="stylesheet" href="/css/ContactUs.css">
+    <link rel="stylesheet" href="/css/ContactUsR.css">
 </head>
 <body>
-    <%- include('../partials/navbar.ejs') %>
+    <%- include('../partials/navbarR.ejs') %>
        <div id="profileinfo">
       <p>For profile details, please go to the Home page.</p>
       <div>
@@ -33,7 +33,7 @@
             <a href="https://www.linkedin.com/in/mukesh-samardha-ginne/"><img src="/assets/linkedin.svg"></a>
            <a href=""><img src="/assets/facebook.svg"></a>
             <div id="form">
-                <form method="post" id="formaction">
+                <form method="post" action="/ContactForm">
                     <br>
                    <input type="text" id="name" name="name" placeholder="Your Name" required>
                    <br>
@@ -89,5 +89,5 @@
         </div>
     <%- include('../partials/footer.ejs') %>
 </body>
-<script src="/js/ContactUs.js"></script>
+<script src="/js/ContactUsR.js"></script>
 </html>

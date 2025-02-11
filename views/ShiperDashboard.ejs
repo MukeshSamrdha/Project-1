@@ -9,8 +9,8 @@
     <div id="firstdiv">
         <h1>Shiper Dashboard</h1>
         <div id="firstdivbtn">
-            <button id="mybids">My Bids</button>
-            <button id="newshipment">New Shipment</button>
+            <a id="mybidslink"><button id="mybids">My Bids</button></a>
+            <a id="newshipmentlink"><button id="newshipment">New Shipment</button></a>
         </div>
     </div>
     <div id="seconddiv">
@@ -20,35 +20,35 @@
                 <img src="/assets/user.svg">
                 <div id="profilediv">
                    <h3>Name</h3>
-                   <p>Name@gmail.com</p>
+                   <p><%= Result.fullname %></p>
                 </div>
             </div>
             <div class="formlike">
                 <p>Company</p>
-                <div class="formlikeele">Not Yet Entered</div>
+                <div class="formlikeele"><%= Result.ca ? Result.ca : "No Company" %></div>
             </div>
              <div class="formlike">
                 <p>Phone Number</p>
-                <div class="formlikeele">8328501487</div>
+                <div class="formlikeele"><%= Result.phonenumber %></div>
             </div>
              <div class="formlike">
                 <p>Address</p>
-                <div class="formlikeele">Khaja Mansion Function Hall,Banjara Hills rd-1,Hyderabad</div>
+                <div class="formlikeele"><%= Result.pa %></div>
             </div>
         </div>
         <div class="seconddivele">
             <h2>Vechile Details</h2>
             <div class="formlike">
                 <p>Vechile Type</p>
-                <div class="formlikeele">Goods Carrier</div>
+                <div class="formlikeele">Fetching</div>
             </div>
              <div class="formlike">
                 <p>Vechile Model</p>
-                <div class="formlikeele">Scania TX-300 TURBO</div>
+                <div class="formlikeele">Fetching</div>
             </div>
              <div class="formlike">
                 <p>Capacity</p>
-                <div class="formlikeele">50,000kg</div>
+                <div class="formlikeele">Fetching</div>
             </div>
         </div>
         <div class="seconddivele">
@@ -136,6 +136,7 @@
         </div>
     </div>
     </div>
+    <%- include("../partials/footer.ejs")%>
 </body>
 <script src="/js/ShiperDashboard.js"></script>
 </html>

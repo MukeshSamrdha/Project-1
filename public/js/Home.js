@@ -8,19 +8,44 @@ let btns = document.querySelectorAll(".ysb");
 btns.forEach((ele) => {
     ele.addEventListener("click", () => {
         let id = ele.getAttribute("id");
-        if (id == "ysbcs") {
+        if (id == "ysbcs"){
             document.querySelector("#ysbcs").style.backgroundColor = "#0284C7";
             document.querySelector("#ysbcs").style.color = "white";
             document.querySelector("#ysbps").style.backgroundColor = "white";
-            document.querySelector("#ysbps").style.color = "black";
-        } else {
-              document.querySelector("#ysbcs").style.backgroundColor =
-                "white";
+          document.querySelector("#ysbps").style.color = "black";
+            document.querySelector("#ysbrt").style.backgroundColor = "white";
+            document.querySelector("#ysbrt").style.color = "black";
+          document.querySelector("#displaysection").style.display = "flex";
+          document.querySelector("#displaysectionpast").style.display = "none";
+          document.querySelector("#displaysectionready").style.display = "none";
+        }else if(id=="ysbrt"){
+              document.querySelector("#ysbcs").style.backgroundColor ="white";
+              document.querySelector("#ysbcs").style.color = "black";
+              document.querySelector("#ysbps").style.backgroundColor = "white";
+          document.querySelector("#ysbps").style.color = "black";
+            document.querySelector("#ysbrt").style.backgroundColor = "#0284C7";
+            document.querySelector("#ysbrt").style.color = "white";
+            document.querySelector("#displaysection").style.display = "none";
+            document.querySelector("#displaysectionpast").style.display = "none";
+            document.querySelector("#displaysectionready").style.display = "flex";
+        }else {
+           document.querySelector("#ysbcs").style.backgroundColor ="white";
               document.querySelector("#ysbcs").style.color = "black";
               document.querySelector("#ysbps").style.backgroundColor = "#0284C7";
-              document.querySelector("#ysbps").style.color = "white";
+          document.querySelector("#ysbps").style.color = "white";
+            document.querySelector("#ysbrt").style.backgroundColor = "white";
+            document.querySelector("#ysbrt").style.color = "black";
+            document.querySelector("#displaysection").style.display = "none";
+          document.querySelector("#displaysectionpast").style.display = "flex";
+            document.querySelector("#displaysectionready").style.display = "none";
         }
     })
+})
+document.querySelectorAll(".viewdetailsbtnready").forEach((ele) => {
+  let sid = ele.getAttribute('id');
+  ele.addEventListener("click", () => {
+    window.location.href = "/ShipmentBids?id=" + id + "&shipmentid=" + sid;
+  })
 })
 let id = redirect();
 document.querySelector("#aboutus").href = "/AboutUs?id=" + id;
@@ -42,6 +67,7 @@ profilebtn.addEventListener("click", () => {
         profileinfo.style.display = "none";
     }
 })
+
 let logout = document.querySelector("#logoutbtn");
 logout.addEventListener("click", () => {
   document.querySelector("#loading").style.display = "block";
@@ -77,6 +103,7 @@ let closex = document.querySelectorAll(".closex");
 closex.forEach((ele) => {
   ele.addEventListener("click", () => {
     document.querySelectorAll(".viewdetails").forEach((ele) => {
+      document.body.style.overflow = "auto";
       ele.style.display = "none";
     });
   });
@@ -85,13 +112,15 @@ closex.forEach((ele) => {
 let viewdetailsbtn = document.querySelectorAll(".viewdetailsbtn");
 viewdetailsbtn.forEach((ele) => {
   ele.addEventListener("click", () => {
-    console.log("HI");
-    let id = ele.getAttribute('id');
+    let id = ele.getAttribute("id");
     let k = id.slice(14);
     let newid = "#viewdetails" + k;
     document.querySelector(newid).style.display = "block";
-  })
-})
+    document.body.style.overflow = "hidden"; // Disable scrolling
+    document.querySelector(newid).style.backdropFilter = "blur(10px)";
+  });
+});
+
 let mode;
 async function getmode(){  //onload
   return fetch("/Mode?id=" + id, {
@@ -144,16 +173,19 @@ function changemode(mode){
      document.querySelectorAll("label").forEach((ele) => {
        ele.style.color = "white";
      });
-     document.querySelector("#yourshipments").style.backgroundColor = "#111827";
+    document.querySelector("#yourshipments").style.backgroundColor = "#111827";
      document.querySelectorAll(".di").forEach((ele) => {
        ele.style.backgroundColor = "black";
      });
      document.querySelector("#imghead").style.backgroundColor =
-       "rgb(63, 29, 13)";
-     document.querySelector("#profileinfo").style.backgroundColor = "black";
+      "rgb(63, 29, 13)";
      document.querySelectorAll(".viewdetails").forEach((ele) => {
        ele.style.backgroundColor = "black";
      });
+    document.querySelector("#profileinfo").style.backgroundColor = "black";
+    document.querySelectorAll(".noshipment").forEach((ele) => {
+           ele.style.backgroundColor = "black";
+         })
   } else {
     document.querySelector("#modebtnimg").src = "/assets/moon.svg";
     document.querySelector("body").style.backgroundColor = "white";
@@ -196,6 +228,9 @@ function changemode(mode){
     document.querySelectorAll(".viewdetails").forEach((ele) => {
       ele.style.backgroundColor = "white";
     });        
+     document.querySelectorAll(".noshipment").forEach((ele) => {
+       ele.style.backgroundColor = "white";
+     });
   }
 }
 
@@ -249,6 +284,9 @@ function changemodeclick(mode){
         document.querySelectorAll(".viewdetails").forEach((ele) => {
           ele.style.backgroundColor = "black";
         });
+         document.querySelectorAll(".noshipment").forEach((ele) => {
+           ele.style.backgroundColor = "black";
+         });
       })
       .catch((err) => {
          console.log("HI");
@@ -302,6 +340,9 @@ function changemodeclick(mode){
         document.querySelectorAll(".viewdetails").forEach((ele) => {
           ele.style.backgroundColor = "white";
         });              
+       document.querySelectorAll(".noshipment").forEach((ele) => {
+         ele.style.backgroundColor = "white";
+       });
       })
       .catch((err) => {
         console.log("HI");

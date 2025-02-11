@@ -102,7 +102,7 @@ html{
     border-bottom-right-radius: 25px;
 }
 .ysb:hover{
-    border:3px solid #0369A1;
+    border:1px solid #0369A1;
 }
 #displaysection{
     margin:2vh 0vh;
@@ -112,6 +112,26 @@ html{
     flex-direction: column;
     justify-content: space-around;
     align-items: center;
+}
+#displaysectionpast{
+     margin:2vh 0vh;
+    height:50vh;
+    overflow-y:scroll;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    display:none;
+}
+#displaysectionready{
+      margin:2vh 0vh;
+    height:50vh;
+    overflow-y:scroll;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    display:none;
 }
 .di{
    border-radius: 25px;
@@ -229,7 +249,6 @@ form button:hover{
     background-color: white;
     padding:3vh 2vw;
     border-radius:25px; 
-    width:30%;
     position:absolute;
     right:1.5vw;
     top:12vh;
@@ -263,6 +282,10 @@ form button:hover{
     display: flex;
     justify-content: space-between;
 }
+#twodivp{
+    display: flex;
+    justify-content: space-between;
+}
 #divbtndi{
     height:15vh;
     /* background-color: antiquewhite; */
@@ -283,18 +306,26 @@ form button:hover{
 .viewdetails{
     box-shadow: 0 0 10px 0 gray;
     padding:1vh 4vh;
-    position:absolute;
-    top:60vh;
-    width:40%;
-    height:70vh;
+    position:fixed;
+    top:8vh;
+    width:50%;
+    height:80vh;
     background-color: white;
     overflow-y: auto;
     border-radius:20px;
     display: none;
+
+}
+.v
+h4{
+    text-align:center;
 }
 .vdheading{
     display:flex;
     justify-content: space-between;
+}
+.vdele h4{
+    text-align: center;
 }
 .viewdetails h3{
     text-align: center;
@@ -349,11 +380,18 @@ form button:hover{
     margin-top: -1vh;
 }
 
-.profileele1{
-     display:flex;
-    flex-direction: column;
-    justify-content:center;
+.profileele1 {
+    display: flex;
+    align-items: center;  /* Aligns items vertically */
+    justify-content:flex-start;  /* Distributes space evenly */
+    padding: 10px;  /* Adds some spacing inside the container */
+    margin: 2px 0;  /* Adds spacing between multiple elements */
+    border-radius: 8px;  /* Optional: for smoother corners */
+    font-family: Arial, sans-serif;  /* Better font rendering */
+    margin-left:-1vh;
+    margin-bottom:-2vh;
 }
+
 #email{
     display: none;
 }
@@ -365,7 +403,7 @@ form button:hover{
     display:none;
    width:50%;
 }
-#noshipment{
+.noshipment{
     border-radius: 25px;
     background-color: white;
     padding:2vh 4vh;
@@ -373,4 +411,32 @@ form button:hover{
     justify-content: center;
     width:50%;
     margin:1vh 0vh;
+}
+#cutoff{
+    display:none;
+}
+#bestprice{
+    display:none
+}
+#shiperid{
+    display:none;
+}
+#nobidders{
+    display:none;
+}
+#buttondivmain{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+.btndivs{
+    background-color: #0284C7;
+    color:white;
+    padding:1vh 2vh;
+    font-size:1.1rem;
+    border-radius:15px;
+    border:1px solid #0284C7;
+}
+.btndivs:hover{
+    background-color: #0369A1;
 }

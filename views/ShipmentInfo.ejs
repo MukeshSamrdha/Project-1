@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('../partials/header.ejs') %>
+<link rel="stylesheet" href="/css/ShipmentInfo.css">
+</head>
+<body>
+    <nav>
+    <div id="navbar">
+    <div id="first">
+      <img src="/assets/ship (1).svg" height="80%">
+      <h1 style="font-size:200%">ShipIt</h1>
+    </div>
+    <div id="middle">
+        <div class="middleele"><a  href="/ShipmentDashboard" id="homelink">Home</a></div>
+         <div class="middleele"><a  href="/AboutUsR" id="aboutus">AboutUs</a></div>
+          <div class="middleele"><a  href="/ContactUsR" id="contactus">ContactUs</a></div>
+    </div>
+    <div id="last">
+      <button class="navbtn" id="modebtn"><img src="assets/moon.svg" id="modebtnimg"></button>
+      <button class="headingbtnnav" id="shiperdashboard">Shiperdashboard</button>
+      <button class="headingbtnnav" id="shiperarea">Shipment Area</button>
+    </div>
+    </div>
+</nav>
+<hr>
+    <h1 id="mainheading">Bidding Area</h1>
+    <div id="main">
+       <div id="cutoffdiv">
+      <div class="biddinginfodiv" style="width:auto;margin-right:2vh;">
+        <p style="margin-bottom:4vh">Cutoff Amount</p>
+        <h1><%= Shipment.cutoff %></h1>
+        <h4 style="margin-top:-1vh;margin-left:2vh;">This Is Based On Constraint Calculation,Avg Calculation In Transport Sector</h4>
+      </div>
+      <div id="notice">
+        <h4>Note:</h4>
+        <ul>
+          <li><p>The Bidding Price Must Be Higher Than The Cutoff Price</p></li>
+          <li><p>The Bidding Price Lower Than The Cutoff Will Be Invalid</p></li>
+        </ul>
+      </div>
+       </div>
+    <div id="biddinginfo">
+        <div id="biddinginfomain">
+      <div class="biddinginfodiv">
+        <p>Current Best Price</p>
+        <h1><% let price=Shipment.bestprice %> 
+          <% if(price==-1){%>
+            No Bids Yet
+          <%}else{%>
+            <%= price %>
+          <%}%>
+        </h1>
+      </div>
+      <div class="biddinginfodiv">
+       <p id="timeremaininggheading">Time Left</p>
+       <h1 id="timeremaining">ShipIt</h1>
+
+<script>
+ document.addEventListener("DOMContentLoaded", function () {
+  function getRemainingTime(pickUpDate) {
+    let interval; // Declare interval
+
+    function updateTimer() {
+      const now = new Date().getTime();
+      const pickuptime = new Date(pickUpDate).getTime();
+      
+      if (isNaN(pickuptime)) {
+        console.error("Invalid pickup time:", pickUpDate);
+        document.querySelector("#timeremaining").innerHTML = "Invalid Date";
+        clearInterval(interval);
+        return;
+      }
+
+      const remaining = pickuptime - now-19800000;
+      //console.log("Time Remaining (ms):", remaining);
+
+      if (remaining <= 0) {
+        document.querySelector("#timeremaininggheading").innerHTML = "Auction";
+        document.querySelector("#timeremaining").innerHTML = "Completed";
+        if (document.querySelector("#timeremaining").innerHTML === "Completed") {
+          document.querySelector("#placebid").style.display = "none";
+          document.querySelector("#auctionendedmain").style.display = "block";
+          fetch("/GetStatus?shipmentid=" + getshipmentid(), {
+           method: "POST",
+           headers: { "Content-Type": "application/json" },
+           body: JSON.stringify({ status:0})
+           }).then(() => {
+          console.log("Success");
+           }).catch((err) => {
+          console.log(err);
+         })
+        } else {
+            document.querySelector("form").action = "PlaceBid?id=" + id + "&shipmentid=" + getshipmentid();
+        }
+        clearInterval(interval);
+        return;
+      }
+      const days = Math.floor(remaining / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((remaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((remaining % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((remaining % (1000 * 60)) / 1000);
+
+      document.getElementById("timeremaining").innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+    }
+
+    updateTimer(); // Run immediately
+    interval = setInterval(updateTimer, 1000); // Assign interval
+  }
+
+  // Ensure pickup time is properly set by the server
+  const pickupTimeString = "<%= Shipment.pud.toISOString() %>"; // Injected value from the server
+
+  console.log("Server Pickup Time:", pickupTimeString); // Debugging
+
+  if (pickupTimeString && pickupTimeString !== "undefined") {
+    const pickupTime = new Date(pickupTimeString);
+    getRemainingTime(pickupTime);
+  } else {
+    console.error("Invalid pickup time received from the server.");
+  }
+});
+
+</script>
+      </div>
+      <div class="biddinginfodiv">
+        <p>Number of Bids</p>
+        <h1><%= Shipment.bid.length %></h1>
+      </div>
+      </div>
+    </div>
+    <div id="shipmentdetails">
+        <div id="shipmentdetailsmain">
+        <div class="shipmentdetailsdiv">
+          <h4>Pickup & Destination</h4>
+        <p>PickUp: <%=Shipment.fcity%></p>
+        <p>Destination: <%=Shipment.tcity%></p>
+        </div>
+         <div class="shipmentdetailsdiv">
+          <h4>Delivery Details</h4>
+          <% let a = new Date(Shipment.pud).toDateString().slice(4, 15); %>
+          <p>Date: <%= a %></p>
+            <p>Estimated Delivery:2days</p>
+         </div>
+          <div class="shipmentdetailsdiv">
+            <h4>Package Details</h4>
+            <p>Weight: <%=Shipment.weight%>kg</p>
+            <p>Dimenisions: <%= Shipment.length %>x<%= Shipment.width %>x<%=Shipment.height%>cm<sup>3</sup></p>
+          </div>
+          </div>
+    </div>
+    <div id="placebid">
+        <div id="placebidmain">
+           <h2>Place Your Bid Here</h2>
+           <form action="" method="post" id="placebidform">
+            <input type="number" name="bidamount" id="bidamount" placeholder="Enter Your Bid price" required>
+            <br>
+            <button id="placebidbtn">Place Bid</button>
+           </form>
+        </div>
+    </div>
+    <div id="auctionended">
+        <div id="auctionendedmain">
+           <h2>Auction Has Ended</h2>
+           <ul>
+            <li><p>If you applied an bid here,your bid is registered,wait for the customer to accept it </p></li>
+            <li><p>Once the customer accepts your bid, you can start the load to the respective destination</p></li>
+           </ul>
+        </div>
+    </div>
+</div>
+    <%- include('../partials/footer.ejs') %>
+</body>
+<script src="/js/ShipmentInfo.js"></script>
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+    <%- include('../partials/header.ejs') %>
+    <link rel="stylesheet" href="/css/AboutUsR.css">
+</head>
+<body>
+    <%- include('../partials/navbarR.ejs') %>
+    <div id="profileinfo">
+      <p>For profile details, please go to the Home page.</p>
+      <div>
+      <a  id="homeredirectbtn"><button onclick="document.location.href='/Home'" id="profileinfobtn">Home</button></a>
+      </div>
+    </div>
+      <div id="main">
+        <h1 id="mainheading">About ShipIt</h1>
+        <p id="mainpara">
+            ShipIt is a revolutionary platform that connects customers with individual shippers through an innovative bidding system. We're transforming the shipping industry by making it more accessible, competitive, and efficient.
+        </p>
+      </div>
+      
+      <div id="body1">
+        <div id="body1child1">
+            <h2 class="bodyheading">Our Mission</h2>
+            <p class="body1child1para">At ShipIt, our mission is to revolutionize the shipping industry by creating a platform where individual shippers can compete fairly for shipments, while customers benefit from competitive pricing and a wide range of options.</p>
+            <p class="body1child1para">We believe in empowering both shippers and customers, fostering a community where quality service and fair pricing go hand in hand.</p>
+        </div>
+        <div id="body1child2">
+             <h2 class="bodyheading">Key Features</h2>
+             <div class="body1child2ele">
+                <img src="/assets/circle-check-big (2).svg">
+                <p>Innovative bidding system for competitive pricing</p>
+             </div>
+              <div class="body1child2ele">
+                <img src="/assets/circle-check-big (2).svg">
+                <p>Wide network of verified individual shippers</p>
+             </div>
+              <div class="body1child2ele">
+                <img src="/assets/circle-check-big (2).svg">
+                <p>Transparent rating and review system</p>
+             </div>
+              <div class="body1child2ele">
+                <img src="/assets/circle-check-big (2).svg">
+                <p>Secure payment and dispute resolution</p>
+             </div>
+        </div>
+      </div>
+
+      <div id="body2">
+        <h2 class="bodyheading">How ShipIt Works</h2>
+        <div id="body2main">'
+          <div class="body2ele">
+            <img src="/assets/package (1).svg">
+            <h3>Post Your shipments</h3>
+              <p>Customers upload details about their shipment, including size, weight, and destination.</p>
+          </div>
+          <div class="body2ele">
+            <img src="/assets/users.svg">
+            <h3>Receive Bids</h3>
+              <p>Individual shippers place competitive bids on the shipment.</p>
+          </div>
+          <div class="body2ele">
+            <img src="/assets/trending-up.svg">
+            <h3>Choose and Ship</h3>
+              <p>Customers select the best bid, and the chosen shipper handles the delivery.</p>
+          </div>
+        </div>
+      </div>
+
+      <div id="body3">
+        <h2 class="bodyheading">Join the ShipIt Revolution</h2>
+        <p>Whether you're a customer looking for competitive shipping rates or an individual shipper seeking new opportunities,ShipIt is here to tramsform your shipping experience</p>
+        <div id="body3btn">
+          <a id="homebtn"><button class="body3btns" >Dashboard</button></a>
+        </div>
+      </div>
+    <%- include('../partials/footer.ejs') %>
+</body>
+<script src="/js/AboutUsR.js"></script>
+</html>

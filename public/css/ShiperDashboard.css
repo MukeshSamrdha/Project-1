@@ -43,13 +43,13 @@
 }
 #logout{
   display:block;
-  background-color:#0284C7 ;
+  padding:1vh;
 }
 #logout:hover{
-    background-color:#0369A1;
+    background-color:rgb(210, 210, 210);
 }
 #main{
-    background-color:rgb(240, 240, 240);
+    background-color:#F0F9FF;
     padding-bottom:2vh;
 }
 #firstdiv{
@@ -161,6 +161,7 @@
     justify-content: left;
     padding:2vh;
     border-radius:20px;
+    box-shadow:0 0 10px 0 grey;
 }
 #fourthdiv{
     display:flex;

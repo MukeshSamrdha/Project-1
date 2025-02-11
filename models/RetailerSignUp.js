@@ -10,7 +10,16 @@ const RetailerSchema = new schema({
     drivingliscence: { type: String, required: true },
     vr: { type: String, required: true },
     confirmpassword: { type: String, required: true },
-    verifypassword: { type: String, required: true }
+    verifypassword: { type: String, required: true },
+    ratings: { type: Number, required: true },
+    ds:{type:String,required:true},
+    shipments: [{
+        shipmentid: { type: mongoose.Types.ObjectId, requied: true },
+        bestprice: { type: Number, required: true },
+        status:{type:Number,required:true}
+    }
+    ],
+    mode: { type: String, required: true }
 }, { timestamps: true });
 
 const RegisterModel = mongoose.model("Retailer", RetailerSchema);

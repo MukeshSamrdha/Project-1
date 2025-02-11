@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('../partials/header.ejs') %>
+<link rel="stylesheet" href="/css/ShipmentBids.css">
+</head>
+<body>
+    <nav>
+    <div id="navbar">
+    <div id="first">
+      <img src="/assets/ship (1).svg" height="80%">
+      <h1 style="font-size:200%">ShipIt</h1>
+    </div>
+    <div id="last">
+      <button class="navbtn" id="modebtn"><img src="assets/moon.svg" id="modebtnimg"></button>
+       <!-- <a href="/dark"><img src="assets/moon.svg" alt="moon"></a> -->
+       <button id="homebtn">Home</button>
+    </div>
+    </div>
+    </nav>
+    <h2>Bids For This Shipment</h2>
+    <div id="notedivmain">
+    <div id="notediv">
+        <h3>Note:</h3>
+        <ul>
+            <li>Once you accept the bid,you cannot cancel it</li>
+            <li>So,it's your responsibility to carefully choose your driver</li>
+        </ul>
+    </div>
+    </div>
+    <div id="displaysection">
+        <div id="btnsec">
+            <button id="ratings">Sort By Price/Cost</button>
+            <button id="price">Sort By Ratings</button>
+        </div>
+       <% let k = Bids; %>
+      <% let v = k.sort((a, b) => { %>
+     <% if (b.ratings !== a.ratings) { %>
+        <% return  Number(b.ratings) -Number(a.ratings)%>
+     <% } else { %>
+        <% return Number(a.bestprice) - Number(b.bestprice) %>
+     <% } %>
+     <% }); %>
+      <% for(let i=0;i<k.length;i++){%>
+          <div class="shiperbids">
+            <div  class="<%= k[i].Shiperid %>">
+            <p class="n<%= k[i].Shiperid %>">FirstName:_________</p>
+            <p class="v<%= k[i].Shiperid %>">Vechile:______________</p>
+          <hr>
+            <p>Offer:<%= k[i].Bestprice %></p>
+            <p class="r<%= k[i].Shiperid %>">Ratings:___________</p>
+          <div class="acceptbtn">
+             <button class="acceptbid">Accept</button>
+          </div>
+          </div>
+        </div>
+     <% }%>
+    </div>
+    <div id="loading" style="display: none;">
+    <img src="/assets/Broken circle.gif" alt="Loading..." />
+</div>
+</body>
+<script src="/js/ShipmentBids.js"></script>
+</html>

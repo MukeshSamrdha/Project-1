@@ -28,7 +28,7 @@ Login();
 let id=redirect();
  document.querySelector("#homelink").href = "/Home?id=" + id;
  document.querySelector("#aboutus").href = "/AboutUs?id=" + id;
-document.querySelector("#contactus").href = "/contactus?id=" + id;
+document.querySelector("#contactus").href = "/ContactUs?id=" + id;
 document.querySelector("#homebtn").href = "/Home?id=" + id;
 document.querySelector("#homeredirectbtn").href = "/Home?id=" + id;
 

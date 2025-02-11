@@ -24,7 +24,7 @@ async function getotp() {
 //     })
 // }
 sendopt.addEventListener("click", () => {
-    alert("An OTP has been sent to your email");
+    alert("Click! Ok To Receive An OTP,Check Your Email");
 })
 otp.addEventListener("click", async () => {
     await getotp().then((result) => {

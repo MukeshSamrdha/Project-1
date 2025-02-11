@@ -6,15 +6,11 @@
 <body>
     <%- include('../partials/navbar.ejs') %>
     <div id="main">
-        <form action="/ShipmentArea" method="post">
+        <form action="/ShipmentArea" method="post" id="addressform">
             <div id="flexdiv">
             <div class="inputdiv">
             <label for="fromaddress">From Address</label>
             <input type="text" id="fromaddress" name="fromaddress" placeholder="Ex:Hyderabad" required>
-            </div>
-            <div class="inputdiv">
-            <label for="toaddress">To Address</label>
-            <input type="text" id="toaddress" name="toaddress" placeholder="Ex:Mumbai" required>
             </div>
             </div>
             <div id="filterdiv">
@@ -33,7 +29,7 @@
         <div id="Shipmentdisplay">
             <% let count=0 %>
                <% for(let i=0;i<Shipment.length;i++){ %>
-                <% if(Shipment[i].fcity==Form.fromaddress && Shipment[i].tcity==Form.toaddress && Shipment[i].weight<=Form.weightrange){%>
+                <% if(Shipment[i].weight<=Form.weightrange){%>
                     <% count++; %>
                  <div class="shipmentdiv">
                     <div class="shipmentdiv1">
@@ -46,7 +42,7 @@
                         </div>
                     </div>
                     <div class="shipmentdiv2">
-                        <P>Dimensions:<%=Shipment[i].length%>x<%=Shipment[i].width%>x<%=Shipment[i].height%>cm</P>
+                        <P>Dimensions:<%=Shipment[i].length%>x<%=Shipment[i].width%>x<%=Shipment[i].height%>cm<sup>3</sup></P>
                         <p>Weight:<%=Shipment[i].weight%>kg</p>
                     </div>
                     <hr>
@@ -55,7 +51,8 @@
                         <p>Destination:<%=Shipment[i].tcity%>,<%=Shipment[i].tstate%></p>
                     </div>
                     <div class="shipmentdiv3">
-                        <button type="submit" class="sipmentbtn">Place Bid</button>
+                        
+                        <button type="submit" class="shipmentbtn" id="shipmentbtn<%=Shipment[i]._id%>">Place Bid</button>
                     </div>
                 </div>
                 <% } %>

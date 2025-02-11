@@ -20,7 +20,6 @@
     </div>
 
     <div class="profileele1" >
-   <p>Email: </p>
    <h4 id="emailhead"><%= Result.email %></h4>
     </div>
 
@@ -36,10 +35,9 @@
    </div>
    
     <div class="profileele1">
-   <p> Address:</p>
    <% let Address=Result.address ; %>
    <% if(Address == ""){ %>
-     <h4>Not Yet Entered</h4>
+     <h4>Address ,Not Yet Entered</h4>
   <% }else{ %>
       <h4><%= Address %></h4>
   <% }   %>
@@ -62,98 +60,106 @@
         </div>
       </div>
       <div id="yourshipments">
+        <div id="buttondivmain">
+        <div id="buttondiv">
+            <button id="currentshipments" class="btndivs">Active Shipments</button>
+        </div>
+        </div>
            <h1 id="yourshipmentheading">Your Shipments</h1>
            <div id="yourshipmentbtns">
-            <button class="ysb" id="ysbcs">Current Shipments</button>
-            <button class="ysb" id="ysbps">Past Shipments</button>
+            <button class="ysb" id="ysbcs">Currently In Auction</button>
+            <button class="ysb" id="ysbrt">Ready to start</button>
+            <button class="ysb" id="ysbps">Delivered Shipments</button>
            </div>
            <div id="displaysection">
             <!-- render the data into divs here past are also their -->
-             <% if(Shipment.length>1){%>
+             <% if(Shipment.length>=1){%>
+                  <% let v=0 %>
              <% for(let i=0;i<Shipment.length;i++){ %>
-            <div class="di" id="di-<%=i%>">
+                <% if(Shipment[i].status==1){%>
+                    <% v++ %>
+                    <!-- <h1><%= v %></h1> -->
+                   <div class="di" id="di-<%=v %>">
                 <div class="headerdi">
                     <img src="/assets/package (1).svg">
-                    <h3>Shipment-<%=i+1%></h3>
+                    <h3>Shipment-<%=v%></h3>
                 </div>
                 <div id="twodiv">
                 <div>
-                <p>Bids:0</p>
-                <% if(Shipment[i].status=='1') {%>
-                <p>Status:In Transit</p>
-                <%}%>
+                <p>Bids:<%= Shipment[i].bid ? Shipment[i].bid.length : 0 %></p>
+                <p>Status:In Auction</p>
                 <p>Time Left:2 days</p>
                 </div>
                 <div id="divbtndi">
-                    <button type="button" class="viewdetailsbtn" id="viewdetailsbtn<%=i+1%>">View Details</button>
+                    <button type="button" class="viewdetailsbtn" id="viewdetailsbtn<%=v%>">View Details</button>
                 </div>
                 </div>
             </div>
-            <div class="viewdetails" id="viewdetails<%=i+1%>">
-    <!-- id undi not class -->
-    <div class="vdheading">
-        <h3>Shipment-<%=i+1%> Details</h3>
-        <button class="closex"><img src="/assets/x.svg"></button>
-    </div>
-    <h3>Status & Bids</h3> 
-    <div class="one">
-        <div class="vdele">
-            <p>Status</p>
-            <h4>In Transit</h4>
-        </div>
-        <div class="vdele">
-            <p>Number of Bids</p>
-            <h4>0</h4>
-        </div>
-    </div>
-    <h3>Package Dimensions</h3>
-     <div class="two">
-        <div class="vdele">
-            <p>Length</p>
-            <h4><%=Shipment[i].length%>cm</h4>
-        </div>
-        <div class="vdele">
-            <p>Width</p>
-            <h4><%=Shipment[i].width%>cm</h4>
-        </div>
-        <div class="vdele">
-            <p>Height</p>
-            <h4><%=Shipment[i].height%>cm</h4>
-        </div>
-        <div class="vdele"> 
-             <p>Weight</p>
-             <h4><%=Shipment[i].weight%>kg</h4>
-        </div>
-    </div>
-    <h3>From Address</h3>
-    <div class="three">
-        <div class="vdele">
-            <p>House Number</p>
-            <h4><%=Shipment[i].fhno%></h4>
-        </div>
-        <div class="vdele">
-            <p>Colony</p>
-            <h4><%=Shipment[i].fcolony%></h4>
-        </div>
-        <div class="vdele">
-            <p>City</p>
-            <h4><%=Shipment[i].fcity%></h4>
-        </div>
+
+                     <div class="viewdetails" id="viewdetails<%=v%>">
+             <div class="vdheading">
+            <h3>Shipment-<%=v%> Details</h3>
+            <button class="closex"><img src="/assets/x.svg"></button>
+           </div>
+            <h3>Status & Bids</h3> 
+               <div class="one">
+             <div class="vdele">
+                <p>Status</p>
+                 <h4>In Transit</h4>
+              </div>
+              <div class="vdele">
+                  <p>Number of Bids</p>
+                 <h4><%= Shipment[i].bid ? Shipment[i].bid.length : 0 %></h4>
+                </div>
+             </div>
+              <h3>Package Dimensions</h3>
+             <div class="two">
+                 <div class="vdele">
+                   <p>Length</p>
+                   <h4><%=Shipment[i].length%>cm</h4>
+                 </div>
+               <div class="vdele">
+                      <p>Width</p>
+                    <h4><%=Shipment[i].width%>cm</h4>
+             </div>
+              <div class="vdele">
+               <p>Height</p>
+                   <h4><%=Shipment[i].height%>cm</h4>
+                 </div>
+               <div class="vdele"> 
+                   <p>Weight</p>
+                     <h4><%=Shipment[i].weight%>kg</h4>
+                </div>
+            </div>
+             <h3>From Address</h3>
+              <div class="three">
+                  <div class="vdele">
+                         <p>House Number</p>
+             <h4><%=Shipment[i].fhno%></h4>
+             </div>
+               <div class="vdele">
+                 <p>Colony</p>
+                 <h4><%=Shipment[i].fcolony%></h4>
+             </div>
+             <div class="vdele">
+               <p>City</p>
+              <h4><%=Shipment[i].fcity%></h4>
+             </div>
+          </div>
+         <div class="three">
+          <div class="vdele">
+             <p>pincode</p>
+             <h4><%=Shipment[i].fpincode%></h4>
          </div>
-        <div class="three">
+         <div class="vdele"> 
+              <p>State</p>
+              <h4><%=Shipment[i].fstate%></h4>
+         </div>
+         </div>
+         <h3>To Address</h3>
+         <div class="three">
          <div class="vdele">
-            <p>pincode</p>
-            <h4><%=Shipment[i].fpincode%></h4>
-        </div>
-        <div class="vdele"> 
-             <p>State</p>
-             <h4><%=Shipment[i].fstate%></h4>
-        </div>
-        </div>
-        <h3>To Address</h3>
-        <div class="three">
-        <div class="vdele">
-            <p>House Number</p>
+             <p>House Number</p>
             <h4><%=Shipment[i].thno%></h4>
         </div>
         <div class="vdele">
@@ -181,29 +187,93 @@
             <img src="/assets/calendar-days.svg">
             <div class="vdele"> 
              <p>Pick Up Date</p>
-             <h4><%=Shipment[i].pud%></h4>
+             <h4><% let a=new Date(Shipment[i].pud).toDateString() %>
+                <%= a %>
+            </h4>
             </div>
         </div>
         <div class="datediv">
             <img src="/assets/calendar-days.svg">
             <div class="vdele"> 
              <p>Delivery Date</p>
-             <h4><%=Shipment[i].dda%></h4>
+             <h4><% let b=new Date(Shipment[i].pud).toDateString() %>
+                  <%= b %>
+            </h4>
             </div>
         </div>
         </div>
-</div>
+        </div>
+                    <%}%>
             <% } %>
             <%}else{ %>
-                <div id="noshipment">
+                <div class="noshipment">
                     <h2>No Shipments Yet</h2>
                 </div>
                 <% } %>
            </div>
+            <div id="displaysectionpast">
+             <% let k=0 %>
+             <% for(let i=0;i<Shipment.length;i++){%>
+               <% if(Shipment[i].status==-1){%>
+                   <% k++; %>
+                  <div class="di" id="dip-<%=k%>">
+                <div class="headerdi">
+                    <img src="/assets/package (1).svg">
+                    <h3>Shipment-<%=k%></h3>
+                </div>
+                <div id="twodivp">
+                <div>
+                <p>Bids:<%= Shipment[i].bid ? Shipment[i].bid.length : 0 %></p>
+                <p>Status:Auction Completed</p>
+                <p>Time Left:0 days</p>
+                </div>
+                <div id="divbtndi">
+                    <button type="button" class="viewdetailsbtn" id="viewdetailsbtnp<%=k%>">View Details</button>
+                </div>
+                </div>
+                </div>
+               <%}%>
+             <%}%>
+             <%if(k==0){%>
+                 <div class="noshipment">
+                    <h2>No Delivered Shipments Yet</h2>
+                </div>
+            <%}%>
+            </div>
+
+             <div id="displaysectionready">
+             <% let d=0 %>
+             <% for(let i=0;i<Shipment.length;i++){%>
+               <% if(Shipment[i].status==0){%>
+                   <% d++; %>
+                  <div class="di" id="dip-<%=d%>">
+                <div class="headerdi">
+                    <img src="/assets/package (1).svg">
+                    <h3>Shipment-<%=d%></h3>
+                </div>
+                <div id="twodivp">
+                <div>
+                <p>Bids:<%= Shipment[i].bid ? Shipment[i].bid.length : 0 %></p>
+                <p>Status:Auction Completed</p>
+                <p>Time Left:0 days</p>
+                </div>
+                <div id="divbtndi">
+                    <button type="button" class="viewdetailsbtnready" id="<%=Shipment[i].id%>">View Offers</button>
+                </div>
+                </div>
+                </div>
+               <%}%>
+             <%}%>
+             <%if(d==0){%>
+                 <div class="noshipment">
+                    <h2>Currently their are no ready shipments</h2>
+                </div>
+            <%}%>
+            </div>
       </div>
    <section id="section1">
     
-    <form method="post" action="/SubmitShipment">
+    <form method="post" action="/SubmitShipment" id="submitshipmentform">
         <h1>Submit Your Shipment</h1>
         <!-- <input type="email" name="email" id="email" required> -->
          <input type="email" id="shipmentemail" name="email" value="<%=Result.email %>" required>
@@ -332,6 +402,9 @@
                  </div>
                 </div>
             </div>
+            <input type="number" name="cutoff" id="cutoff" value=10000 required>
+            <input type="number" name="bestprice" id="bestprice" value=-1 requied>
+            <input type="text" name="shiperid" id="shiperid" value="Shipitretailer" required>
             <button type="submit" id="submitbtnshipment">Submit Shipment</button>
     </form>
    </section>

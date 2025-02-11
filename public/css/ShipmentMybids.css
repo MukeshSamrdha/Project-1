@@ -1,0 +1,123 @@
+html{
+    scroll-behavior:smooth;
+}
+#navbar{
+    display: flex;
+    justify-content: space-between;
+}
+body{
+    scroll-behavior: smooth;
+}
+#first{
+    display:flex;
+}
+#middle{
+    display:flex;
+    justify-content: space-around;
+    width:20%;
+    margin:2%;
+    display:none;
+}
+#last{
+    display:flex;
+    justify-content: space-around;
+    margin:1.5% 0;
+}
+.middleele{
+    font-size:120%;
+    overflow: visible;
+}
+.navbtn{
+    padding:1vh;
+    border-radius:50%;
+    border-color:rgb(57, 57, 58);
+    background-color:white;
+}
+.navbtn:hover{
+    background-color:rgb(249, 249, 249);
+}
+.middleele a{
+    color:black;
+    text-decoration: none;
+    transition:transform 0.3s linear 0.05s;  
+}
+.middleele a:hover{
+    color:#0369A1;
+    transform: translateY(5px);
+}
+hr{
+    margin-bottom:-2vh;
+}
+nav{
+    margin-bottom:-3vh;
+}
+.headingbtnnav{
+    background-color: #0284C7;
+    color: white;
+    font-size:1.1rem;
+    margin-left:1vh;
+    padding: 0vh 2vh;
+    border-radius: 10px;
+}
+.headingbtnnav:hover{
+    background-color: #0369A1;
+}
+h2{
+    text-align:center;
+    margin-top:-3vh;
+}
+.element{
+    margin-bottom:4vh;
+     background-color:#F0F9FF;
+      margin-left:20%;
+     margin-right:20%;
+    padding:1vh 4vh;
+    border-radius: 10px;
+    box-shadow:0 0 10px 0 grey;
+    padding-bottom:3vh;
+}
+hr{
+    margin-bottom:1vh;
+}
+.head{
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.tail{
+    display:flex;
+    justify-content: end;
+}
+.bidbtn{
+    background-color: #0284C7;
+    color:white;
+    padding:1vh 2vh;
+    border-radius:10px;
+    font-weight:600;
+}
+.bidbtn:hover{
+    color:black;
+}
+#noticemain{
+    display:flex;
+    justify-content: center;
+}
+#notice{
+    background-color: #F0F9FF;
+    margin-bottom:4vh;
+    padding:1vh 3vh;
+    border-radius:10px;
+    box-shadow:0 0 10px 0 grey;
+}
+#nobid{
+    display:flex;
+    flex-direction: column;
+    justify-content:space-around;
+    align-items: center;
+}
+#nobid img{
+    height:50vh;
+}
+#nobid p{
+    font-size: 1.2rem;
+}

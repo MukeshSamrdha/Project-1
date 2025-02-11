@@ -204,3 +204,7 @@ a{
 #profilebtn{
     display:none;
 }
+#RetaSignIn{
+    display:flex;
+    justify-content: center;
+}
