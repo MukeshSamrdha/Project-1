@@ -1,4 +1,5 @@
 require("dotenv").config(); //Load the .env Variables
+const https = require("https");
 const express = require("express");
 const mongoose = require("mongoose");
 const nodemailer = require("nodemailer");
@@ -7,10 +8,9 @@ const CustomerModel = require("./models/CustomerSignUp");
 const ShipmentModel = require("./models/ShipmentDetails");
 const ContactModel = require("./models/Contact");
 const RetailerModel = require("./models/RetailerSignUp");
-const LoginoptModel = require("./models/Loginotp");
 const LoginotpModel = require("./models/Loginotp");
-let HOMEURL = "";
-
+const LoginotpModelr = require("./models/Loginotpr");
+const { send } = require("process");
 //functions
 function sendAlert(res, message, redirect) {
   res.send(
@@ -36,6 +36,302 @@ function generateotp() {
   return otp;
 }
 
+async function updateShipments() {
+  let rdate = new Date();
+  let result = await ShipmentModel.find();
+  for (let i = 0; i < result.length; i++) {
+   // console.log("hi");
+   // console.log("hello");
+    if (result[i].status == 1) {
+      console.log("HI");
+      let k = rdate.setHours(0, 0, 0, 0);
+      let m = result[i].pud.setHours(0, 0, 0, 0);
+      if (rdate.getTime() === result[i].pud.getTime()) {
+        console.log("hiiii");
+        let _id = new mongoose.Types.ObjectId(result[i]._id);
+        //  console.log(_id);
+        ShipmentModel.updateOne({ _id }, { status: 0 })
+          .then(() => {})
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+    }
+  }
+}
+// setInterval(() => {
+//   updateShipments();
+// }, 100000);
+
+//api's for lisence and vechile regrestration
+async function initiateDLVerification(idNumber, dateOfBirth) {
+  return new Promise((resolve, reject) => {
+    const options = {
+      method: "POST",
+      hostname: "eve.idfy.com",
+      path: "/v3/tasks/async/verify_with_source/ind_driving_license",
+      headers: {
+        "Content-Type": "application/json",
+        "account-id": process.env.IDFY_ACCOUNT_ID,
+        "api-key": process.env.IDFY_API_KEY,
+      },
+      maxRedirects: 20,
+    };
+
+    const req = https.request(options, (res) => {
+      let chunks = [];
+      res.on("data", (chunk) => chunks.push(chunk));
+      res.on("end", () => {
+        const body = JSON.parse(Buffer.concat(chunks).toString());
+        resolve(body.request_id); // Obtain the request ID
+      });
+      res.on("error", (error) => reject(error));
+    });
+
+    const postData = JSON.stringify({
+      task_id: process.env.DRIVING_LICENSE_TASK_ID,
+      group_id: process.env.DRIVING_LICENSE_GROUP_ID,
+      data: {
+        id_number: idNumber,
+        date_of_birth: dateOfBirth,
+        advanced_details: {
+          state_info: true,
+          age_info: true,
+        },
+      },
+    });
+
+    req.write(postData);
+    req.end();
+  });
+}
+
+async function checkDLVerificationStatus(requestId) {
+  return new Promise((resolve, reject) => {
+    const interval = 5000; // Interval between checks in milliseconds
+    const timeout = 60000; // Maximum time to wait before timing out
+    let elapsedTime = 0;
+
+    const poll = () => {
+      const options = {
+        method: "GET",
+        hostname: "eve.idfy.com",
+        path: `/v3/tasks?request_id=${requestId}`,
+        headers: {
+          "api-key": process.env.IDFY_API_KEY,
+          "Content-Type": "application/json",
+          "account-id": process.env.IDFY_ACCOUNT_ID,
+        },
+        maxRedirects: 20,
+      };
+
+      const req = https.request(options, (res) => {
+        let chunks = [];
+        res.on("data", (chunk) => chunks.push(chunk));
+        res.on("end", () => {
+          const responseString = Buffer.concat(chunks).toString();
+
+          let body;
+          try {
+            body = JSON.parse(responseString);
+          } catch (error) {
+            console.error("Error parsing JSON:", error);
+            return reject(error);
+          }
+
+          // Access the first task in the response array
+          const task = body[0];
+          console.log("Task:Driving license \n", task);
+
+          // Check if the task has a "completed_at" field
+          if (task.completed_at) {
+            const sourceOutput = task.result?.source_output;
+            if (sourceOutput) {
+              // Process the sourceOutput data
+              // Check if validity dates are present
+              if (
+                sourceOutput.nt_validity_from &&
+                sourceOutput.nt_validity_to
+              ) {
+                const validityFrom = new Date(sourceOutput.nt_validity_from);
+                const validityTo = new Date(sourceOutput.nt_validity_to);
+                const currentDate = new Date();
+
+                // Check if current date is within validity period
+                if (currentDate >= validityFrom && currentDate <= validityTo) {
+                  return resolve({
+                    valid: true,
+                    DL_Address: sourceOutput.address, // Save address as DL_Address
+                    state: sourceOutput.state,
+                  });
+                } else {
+                  return resolve({ valid: false });
+                }
+              } else {
+                console.error("Validity dates not found in source_output");
+                return resolve({ valid: false });
+              }
+            } else {
+              console.error("No source_output found in task result");
+              return reject(new Error("No source_output in task result"));
+            }
+          } else if (task.status === "failed") {
+            console.error("Verification task failed");
+            return reject(new Error("Verification task failed"));
+          } else if (task.status === "in_progress") {
+            // Wait and poll again
+            if (elapsedTime < timeout) {
+              elapsedTime += interval;
+              console.log(
+                `Verification in progress... Retrying in ${
+                  interval / 1000
+                } seconds.`
+              );
+              setTimeout(poll, interval);
+            } else {
+              console.error("Verification timed out");
+              return reject(new Error("Verification timed out"));
+            }
+          } else {
+            console.error(`Unknown task status: ${task.status}`);
+            return reject(new Error(`Unknown task status: ${task.status}`));
+          }
+        });
+        res.on("error", (error) => {
+          console.error("Request Error:", error);
+          reject(error);
+        });
+      });
+
+      req.on("error", (error) => {
+        console.error("Request Error:", error);
+        reject(error);
+      });
+
+      req.end();
+    };
+
+    // Start polling
+    poll();
+  });
+}
+
+async function initiateVehicleVerification(rcNumber) {
+  return new Promise((resolve, reject) => {
+    const options = {
+      method: "POST",
+      hostname: "eve.idfy.com",
+      path: "/v3/tasks/async/verify_with_source/ind_rc_basic",
+      headers: {
+        "Content-Type": "application/json",
+        "account-id": process.env.IDFY_ACCOUNT_ID,
+        "api-key": process.env.IDFY_API_KEY,
+      },
+      maxRedirects: 20,
+    };
+
+    const req = https.request(options, (res) => {
+      let chunks = [];
+      res.on("data", (chunk) => chunks.push(chunk));
+      res.on("end", () => {
+        const body = JSON.parse(Buffer.concat(chunks).toString());
+        resolve(body.request_id);
+      });
+      res.on("error", (error) => reject(error));
+    });
+
+    const postData = JSON.stringify({
+      task_id: process.env.VEHICLE_TASK_ID,
+      group_id: process.env.VEHICLE_GROUP_ID,
+      data: {
+        rc_number: rcNumber,
+      },
+    });
+
+    req.write(postData);
+    req.end();
+  });
+}
+
+async function checkVehicleVerificationStatus(requestId) {
+  return new Promise((resolve, reject) => {
+    const interval = 5000; // Interval between checks in milliseconds
+    const timeout = 60000; // Maximum time to wait before timing out
+    let elapsedTime = 0;
+
+    const poll = () => {
+      const options = {
+        method: "GET",
+        hostname: "eve.idfy.com",
+        path: `/v3/tasks?request_id=${requestId}`,
+        headers: {
+          "api-key": process.env.IDFY_API_KEY,
+          "Content-Type": "application/json",
+          "account-id": process.env.IDFY_ACCOUNT_ID,
+        },
+        maxRedirects: 20,
+      };
+
+      const req = https.request(options, (res) => {
+        let chunks = [];
+        res.on("data", (chunk) => chunks.push(chunk));
+        res.on("end", () => {
+          const responseString = Buffer.concat(chunks).toString();
+          let body;
+
+          try {
+            body = JSON.parse(responseString);
+          } catch (error) {
+            return reject(error);
+          }
+
+          const task = body[0];
+          console.log("Task:Vehicle Registration \n", task);
+
+          if (task.completed_at) {
+            const extractionOutput = task.result?.extraction_output;
+            if (extractionOutput) {
+              if (new Date(extractionOutput.fitness_upto) > new Date()) {
+                return resolve({
+                  valid: true,
+                  vehicleClass: extractionOutput.vehicle_class,
+                  registrationNumber: extractionOutput.registration_number,
+                  maker_model: extractionOutput.maker_model,
+                  avg_gross_vehicle_weight:
+                    extractionOutput.avg_gross_vehicle_weight,
+                  unladen_weight: extractionOutput.unladen_weight,
+                });
+              } else {
+                return resolve({ valid: false });
+              }
+            } else {
+              return reject(new Error("No extraction_output in task result"));
+            }
+          } else if (task.status === "failed") {
+            return reject(new Error("Verification task failed"));
+          } else if (task.status === "in_progress") {
+            if (elapsedTime < timeout) {
+              elapsedTime += interval;
+              setTimeout(poll, interval);
+            } else {
+              return reject(new Error("Verification timed out"));
+            }
+          } else {
+            return reject(new Error(`Unknown task status: ${task.status}`));
+          }
+        });
+        res.on("error", (error) => reject(error));
+      });
+
+      req.on("error", (error) => reject(error));
+      req.end();
+    };
+
+    poll();
+  });
+}
+
+//update shipmets for every 2 sec  function rai ikkada
 const app = express();
 let LogedIn = 0;
 let otp = 0;
@@ -76,10 +372,28 @@ app.get("/AboutUsR", (req, res) => {
   res.render("AboutUsR", { title: "AboutUs" });
 });
 app.get("/ContactUs", (req, res) => {
-  res.render("ContactUs", { title: "ContactUs" });
+  const urlParams = new URLSearchParams(req.query);
+  const id = urlParams.get("id");
+  if (id.length == 24) {
+    const _id = new mongoose.Types.ObjectId(id);
+    CustomerModel.findOne({ _id })
+      .then(() => {
+        res.render("ContactUs", { title: "ContactUs" });
+      })
+      .catch((err) => {
+        sendAlert(res, "Please Login", "/Login");
+      });
+  } else {
+    sendAlert(res, "Please Login", "/Login");
+  }
 });
 app.get("/ContactUsR", (req, res) => {
-  res.render("ContactUsR", { title: "ContactUs" });
+  const urlParams = new URLSearchParams(req.query);
+  const id = urlParams.get("id");
+  const _id = new mongoose.Types.ObjectId(id);
+  RetailerModel.findOne({ _id }).then(() => {
+    res.render("ContactUsR", { title: "ContactUs" });
+  });
 });
 app.get("/Login", (req, res) => {
   res.render("Login", { title: "Login" });
@@ -140,8 +454,31 @@ app.get("/ForgotPasswordR", (req, res) => {
 });
 //OTP
 app.get("/otp", (req, res) => {
-  res.status(200).json({ OTP: otp });
+  const urlParams = new URLSearchParams(req.query);
+  const email = urlParams.get('email');
+  console.log(email);
+  LoginotpModel.findOne({ email }).then((result) => {
+    let otp = result.otp;
+    console.log(result.otp);
+     res.status(200).send({ OTP: otp });
+  }).catch((err) => {
+    console.log(err);
+  })
 });
+app.get("/otpr", (req, res) => {
+   const urlParams = new URLSearchParams(req.query);
+   const email = urlParams.get("email");
+  console.log(email);
+  LoginotpModelr.findOne({ email })
+    .then((result) => {
+      let otp = result.otp;
+      console.log(result.otp);
+      res.status(200).send({ OTP: otp });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+})
 app.get("/ShipmentArea", (req, res) => {
   const urlParams = new URLSearchParams(req.query);
   const id = urlParams.get("id");
@@ -171,39 +508,51 @@ app.get("/ShipmentArea", (req, res) => {
 });
 app.get("/ShipmentBids", (req, res) => {
   const urlParams = new URLSearchParams(req.query);
-  const id = urlParams.get('id');
+  const id = urlParams.get("id");
   const _id = new mongoose.Types.ObjectId(id);
-  const shipmentid = urlParams.get('shipmentid');
+  const shipmentid = urlParams.get("shipmentid");
   const sid = new mongoose.Types.ObjectId(shipmentid);
-  CustomerModel.findOne({ _id }).then(() => {
-    ShipmentModel.findOne({ _id: sid }).then((result) => {
-      let Result = result.bid;
-       res.render("Shipmentbids", { title: "ShipmentBids",Bids:Result});
-    }).catch((err) => {
-      console.log(err);
+  CustomerModel.findOne({ _id })
+    .then(() => {
+      ShipmentModel.findOne({ _id: sid })
+        .then((result) => {
+          let Result = result.bid;
+          res.render("Shipmentbids", { title: "ShipmentBids", Bids: Result });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     })
-  }).catch((err) => {
-    console.log(err);
-  })
-})
+    .catch((err) => {
+      console.log(err);
+    });
+});
 
 app.get("/ShipmentMybids", (req, res) => {
   const urlParams = new URLSearchParams(req.query);
-  const id = urlParams.get('id');
+  const id = urlParams.get("id");
   const _id = new mongoose.Types.ObjectId(id);
-  RetailerModel.findOne({ _id }).then((result) => {
-    res.render("ShipmentMybids",{title:"MyBids",Shipment:result.shipments});
-  }).catch(() => {
-    sendAlert(res, "Invalid UserID", "/ShiperDashboard?=" + id);
-  })
-})
+  RetailerModel.findOne({ _id })
+    .then((result) => {
+      res.render("ShipmentMybids", {
+        title: "MyBids",
+        Shipment: result.shipments,
+      });
+    })
+    .catch(() => {
+      sendAlert(res, "Invalid UserID", "/ShiperDashboard?=" + id);
+    });
+});
 app.get("/ShiperDashboard", (req, res) => {
   const urlParams = new URLSearchParams(req.query);
   const id = urlParams.get("id");
   const _id = new mongoose.Types.ObjectId(id);
   RetailerModel.findOne(_id)
     .then((Retailer) => {
-      res.render("ShiperDashboard", { title: "ShiperDashboard",Result:Retailer });
+      res.render("ShiperDashboard", {
+        title: "ShiperDashboard",
+        Result: Retailer,
+      });
     })
     .catch((err) => {
       console.log(err);
@@ -266,38 +615,80 @@ app.get("/ShipmentInfo", (req, res) => {
 
 app.get("/Shipmentdetails", (req, res) => {
   const urlParams = new URLSearchParams(req.query);
-  const id = urlParams.get('id');
+  const id = urlParams.get("id");
   const _id = new mongoose.Types.ObjectId(id);
-  ShipmentModel.findOne({ _id }).then((result) => {
-       res.status(200).send(result);
-  }).catch((err) => {
-    console.log(err);
-  })
-})
-app.get("/Retailerdetails", (req, res) => {
-  const urlParams = new URLSearchParams(req.query);
-  const id = urlParams.get('id');
-  const _id = new mongoose.Types.ObjectId(id);
-  RetailerModel.findOne({ _id }).then((result) => {
-    res.status(200).send({ Result: result });
-  }).catch((err) => {
-    console.log(err);
-  })
-})
-//post requests  //processing
-//LOGOUT
-app.post("/LogedOut", (req, res) => {
-  //change
-  const { email, loged } = req.body; // Extract 'Login' value from the request body
-  LoginotpModel.updateOne({ email }, { loged })
-    .then(() => {
-      // res.status(200).send("Login status received successfully"); // Sends a success response
-      res.status(200).send("Response sended successfully");
+  ShipmentModel.findOne({ _id })
+    .then((result) => {
+      res.status(200).send(result);
     })
     .catch((err) => {
       console.log(err);
     });
 });
+app.get("/Retailerdetails", (req, res) => {
+  const urlParams = new URLSearchParams(req.query);
+  const id = urlParams.get("id");
+  const _id = new mongoose.Types.ObjectId(id);
+  RetailerModel.findOne({ _id })
+    .then((result) => {
+      res.status(200).send({ Result: result });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});
+app.get("/TrackerPage", (req, res) => {
+  const urlParams = new URLSearchParams(req.query);
+  const id = urlParams.get("id");
+  const _id = new mongoose.Types.ObjectId(id);
+  const shipmentid = urlParams.get("shipmentid");
+  const _sid = new mongoose.Types.ObjectId(shipmentid);
+  CustomerModel.findOne({ _id })
+    .then(() => {
+      ShipmentModel.findOne({ _id: _sid })
+        .then((result) => {
+          res.render("TrackerPage", { title: "Tracking", Result: result });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});
+app.get("/RatingsPage", (req, res) => {
+  const urlParams = new URLSearchParams(req.query);
+  const id = urlParams.get('id');
+  const _id = new mongoose.Types.ObjectId(id);
+  CustomerModel.findOne({ _id }).then(() => {
+    res.render("RatingsPage", { title: "RatingsPage" });
+  }).catch((err) => {
+    console.log(err);
+  })
+  res.render("RatingsPage",{title:"Ratings Page"});
+})
+//post requests  //processing
+
+app.post("/LogedOut", (req, res) => {
+  const { email, loged } = req.body;
+  LoginotpModel.updateOne({ email }, { loged })
+    .then(() => {
+      res.status(200).send("Updated successfully");
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});
+
+app.post("/LogedOutR", (req, res) => {
+  const { email, loged } = req.body;
+  LoginotpModelr.updateOne({ email }, { loged }).then(() => {
+    res.status(200).send("Updated successfully");
+  }).catch((err) => {
+    console.log(err);
+  })
+})
 //ADD HOMEURL
 app.post("/CustomerSignUp", (req, res) => {
   const Customers = new CustomerModel(req.body);
@@ -317,17 +708,16 @@ app.post("/CustomerSignUp", (req, res) => {
         if (req.body.createpassword == req.body.verifypassword) {
           Customers.save()
             .then((result) => {
-              let record = new LoginoptModel({
+              let record = new LoginotpModel({
                 email: emailid,
                 otp: "",
                 loged: true,
-                mode: 0,
               });
               record
                 .save()
                 .then(() => {
                   console.log("Saved Details Successfully");
-                  HOMEURL = result._id;
+                  let HOMEURL = result._id;
                   sendAlert(res, "Login Successful", "/Home?id=" + HOMEURL);
                 })
                 .catch((err) => {
@@ -364,7 +754,7 @@ app.post("/CustSignIn", (req, res) => {
       if (result != null) {
         if (result.verifypassword == password) {
           let login = { loged: true };
-          LoginoptModel.updateOne({ email }, login)
+          LoginotpModel.updateOne({ email }, login)
             .then(() => {
               HOMEURL = result._id;
               sendAlert(res, "Login Successful", "/Home?id=" + HOMEURL);
@@ -432,7 +822,7 @@ app.post("/ContactForm", (req, res) => {
 
 app.post("/ForgotPassword", (req, res) => {
   let email = req.body.email;
-  console.log(email);
+  //console.log(email);
   CustomerModel.findOne({ email }).then((result) => {
     if (result == null) {
       sendAlert(
@@ -451,6 +841,9 @@ app.post("/ForgotPassword", (req, res) => {
         },
       });
       otp = generateotp();
+      LoginotpModel.updateOne({ email }, { otp }).then(() => {
+        console.log("otp saved successfully");
+      })
       const mailoptions = {
         from: process.env.EMAIL_ID,
         to: email,
@@ -480,7 +873,7 @@ app.post("/NewPassword", async (req, res) => {
       CustomerModel.updateOne(Email, pass)
         .then(() => {
           let login = { loged: true };
-          LoginoptModel.updateOne({ email }, login)
+          LoginotpModel.updateOne({ email }, login)
             .then(() => {
               HOMEURL = result._id;
               //  res.redirect("/AboutUs");
@@ -505,8 +898,7 @@ app.post("/NewPassword", async (req, res) => {
 
 app.post("/ForgotPasswordR", (req, res) => {
   let email = req.body.email;
-  console.log(email);
-  CustomerModel.findOne({ email }).then((result) => {
+    RetailerModel.findOne({ email }).then((result) => {
     if (result == null) {
       sendAlert(
         res,
@@ -524,6 +916,9 @@ app.post("/ForgotPasswordR", (req, res) => {
         },
       });
       otp = generateotp();
+      LoginotpModelr.updateOne({ email }, { otp }).then(() => {
+        console.log("otp saved successfully");
+      })
       const mailoptions = {
         from: process.env.EMAIL_ID,
         to: email,
@@ -553,7 +948,7 @@ app.post("/NewPasswordR", async (req, res) => {
       RetailerModel.updateOne(Email, pass)
         .then(() => {
           let login = { loged: true };
-          LoginoptModel.updateOne({ email }, login)
+          LoginotpModelr.updateOne({ email }, login)
             .then(() => {
               HOMEURL = result._id;
               //  res.redirect("/AboutUs");
@@ -580,26 +975,109 @@ app.post("/NewPasswordR", async (req, res) => {
     });
 });
 
-app.post("/RetailerSignUp", (req, res) => {
+app.post("/RetailerSignUp", async (req, res) => {
   const Retailer = new RetailerModel(req.body);
   let email = req.body.email;
-  RetailerModel.findOne({ email }).then((Result) => {
+  RetailerModel.findOne({ email }).then(async (Result) => {
     if (Result == null) {
       if (req.body.confirmpassword == req.body.verifypassword) {
-        Retailer.save()
-          .then((result) => {
-            console.log("Saved Successfully");
-            let id = result._id;
+        console.log(req.body.dob);
+        try {
+          // Initiate Driving License Verification
+          const dlRequestId = await initiateDLVerification(
+            req.body.drivingliscence,
+            req.body.dob
+          );
+          console.log(dlRequestId);
+          const dlVerificationResult = await checkDLVerificationStatus(
+            dlRequestId
+          );
+          console.log(dlVerificationResult);
+
+          if (!dlVerificationResult.valid) {
+            return sendAlert(
+              res,
+              "Driving License is not valid for transport use",
+              "/shipperRegistration"
+            );
+          }
+          if (dlVerificationResult.valid) {
+            console.log("Driving License Verification Successfull");
+          }
+
+          //Initiate Vehicle Registration Verification
+          const vehicleRequestId = await initiateVehicleVerification(
+            req.body.vr
+          );
+          const vehicleVerificationResult =
+            await checkVehicleVerificationStatus(vehicleRequestId);
+
+          // Handle failed vehicle registration validation
+          if (!vehicleVerificationResult.valid) {
+            return sendAlert(
+              res,
+              "Vehicle registration number is invalid or fitness has expired. Please check and try again.",
+              "/shipperRegistration"
+            );
+          }
+          if (!vehicleVerificationResult.valid) {
+            console.log("Vehicle Registration Verification Successfull");
+          }
+          let Capacity =
+            vehicleVerificationResult.avg_gross_vehicle_weight -
+            vehicleVerificationResult.unladen_weight;
+          Retailer.capacity = Capacity;
+          Retailer.save()
+            .then((result) => {
+              console.log("Saved Successfully");
+              console.log(result);
+                 let record = new LoginotpModelr({
+                   email:Retailer.email,
+                   otp: "",
+                   loged: true,
+                 });
+                 record
+                   .save()
+                   .then(() => {
+                     console.log("Saved Details Successfully");
+                     sendAlert(res, "Login Successful", "/ShiperDashboard?id=" +Retailer._id);
+                   })
+                   .catch((err) => {
+                     console.log("Failed to load Details");
+                     console.log(err);
+                   });
+            })
+            .catch((err) => {
+              console.log(err);
+              console.log("Login failed");
+            });
+        } catch (error) {
+          if (error.message && error.message.includes("BAD_REQUEST")) {
             sendAlert(
               res,
-              "Registration Successful",
-              "/ShiperDashboard?id=" + id
+              "Vehicle registration number is invalid. Please enter a valid RC number.",
+              "/shipperRegistration"
             );
-          })
-          .catch((err) => {
-            console.log(err);
-            console.log("Login failed");
-          });
+          }
+          if (
+            error.code === 11000 &&
+            error.keyPattern &&
+            error.keyPattern.email
+          ) {
+            return sendAlert(
+              res,
+              "User with this email already exists. Please use a different email.",
+              "/shipperRegistration"
+            );
+          }
+
+          console.error(error);
+          sendAlert(
+            res,
+            "An error occurred during registration. Please try again later.",
+            "/shipperRegistration"
+          );
+        }
       } else {
         sendAlert(res, "Password mismatch,please try again", "/RetailerSignUp");
       }
@@ -623,8 +1101,14 @@ app.post("/RetaSignInn", (req, res) => {
   `);
     } else {
       if (Retailer.confirmpassword == password) {
-        let id = Retailer._id;
-        sendAlert(res, "Login Successful", "/ShiperDashboard?id=" + id);
+        let login = { loged: true };
+        let email = Retailer.email;
+        LoginotpModelr.updateOne({ email }, login).then(() => {
+          let id = Retailer._id;
+            sendAlert(res, "Login Successful", "/ShiperDashboard?id=" + id);
+        }).catch((err) => {
+          console.log(err);
+         })
       } else {
         sendAlert(
           res,
@@ -686,28 +1170,44 @@ app.post("/PlaceBid", (req, res) => {
     .then(() => {
       ShipmentModel.findOne({ _id: shipmentid })
         .then((result) => {
-          if (result.bestprice === -1 && bidprice>-1) {
+          if (result.bestprice === -1 && bidprice > -1) {
             let k = 1;
             result.bid.push({ Shiperid: _id, Bestprice: Number(bidprice) });
             ShipmentModel.updateOne(
-              { _id: shipmentid }, {
-              bestprice: Number(bidprice),
-              bid: result.bid
-            }
-            ).then(() => {
-              RetailerModel.findOne({ _id }).then((Result) => {
-                Result.shipments.push({ shipmentid: shipmentid, bestprice: Number(bidprice), status: 1 });
-                RetailerModel.updateOne({ _id }, {
-                  shipments: Result.shipments
-                }).then(() => {
-                   sendAlert(res, "Bid placed successfully", "/Shipmentinfo?id=" + id + "&shipmentid=" + sid);
-                })
-              }).catch((err) => {
+              { _id: shipmentid },
+              {
+                bestprice: Number(bidprice),
+                bid: result.bid,
+              }
+            )
+              .then(() => {
+                RetailerModel.findOne({ _id })
+                  .then((Result) => {
+                    Result.shipments.push({
+                      shipmentid: shipmentid,
+                      bestprice: Number(bidprice),
+                      status: 1,
+                    });
+                    RetailerModel.updateOne(
+                      { _id },
+                      {
+                        shipments: Result.shipments,
+                      }
+                    ).then(() => {
+                      sendAlert(
+                        res,
+                        "Bid placed successfully",
+                        "/ShipmentMybids?id=" + id
+                      );
+                    });
+                  })
+                  .catch((err) => {
+                    console.log(err);
+                  });
+              })
+              .catch((err) => {
                 console.log(err);
               });
-                }).catch((err) => {
-                  console.log(err);
-                })
           } else if (bidprice > result.cutoff) {
             if (bidprice >= result.bestprice) {
               sendAlert(
@@ -721,34 +1221,46 @@ app.post("/PlaceBid", (req, res) => {
                 { _id: shipmentid },
                 { bestprice: Number(bidprice), bid: result.bid }
               ).then(() => {
-                RetailerModel.findOne({ _id }).then(async(Result) => {
-                 let Shipmententry = Result.shipments.find(entry => entry.shipmentid.equals(shipmentid));
+                RetailerModel.findOne({ _id })
+                  .then(async (Result) => {
+                    let Shipmententry = Result.shipments.find((entry) =>
+                      entry.shipmentid.equals(shipmentid)
+                    );
 
-                 if (Shipmententry) {
-             Shipmententry.bestprice = Number(bidprice);
+                    if (Shipmententry) {
+                      Shipmententry.bestprice = Number(bidprice);
 
-              await Result.save();  // ✅ Ensure the update is saved
+                      await Result.save(); // ✅ Ensure the update is saved
 
-                sendAlert(
-                     res,
-               "Bid placed successfully",
-                "/Shipmentinfo?id=" + id + "&shipmentid=" + sid
-                         );
-                 } else {
-                 await RetailerModel.updateOne(
-                    { _id },
-              { $push: { shipments: { shipmentid, bestprice: Number(bidprice), status: 1 } } }
-              );
+                      sendAlert(
+                        res,
+                        "Bid placed successfully",
+                        "/ShipmentMybids?id=" + id
+                      );
+                    } else {
+                      await RetailerModel.updateOne(
+                        { _id },
+                        {
+                          $push: {
+                            shipments: {
+                              shipmentid,
+                              bestprice: Number(bidprice),
+                              status: 1,
+                            },
+                          },
+                        }
+                      );
 
-              sendAlert(
-                res,
-                "Bid placed successfully",
-               "/Shipmentinfo?id=" + id + "&shipmentid=" + sid
-                );
-                 }
-                }).catch((err) => {
-                  console.log(err);
-                })
+                      sendAlert(
+                        res,
+                        "Bid placed successfully",
+                        "/ShipmentMybids?id=" + id
+                      );
+                    }
+                  })
+                  .catch((err) => {
+                    console.log(err);
+                  });
               });
             }
           } else {
@@ -770,27 +1282,227 @@ app.post("/PlaceBid", (req, res) => {
 
 app.post("/GetStatus", (req, res) => {
   const urlParams = new URLSearchParams(req.query);
-  const id = urlParams.get('shipmentid');
+  const id = urlParams.get("shipmentid");
   //console.log(req.body);
   const _id = new mongoose.Types.ObjectId(id);
+  ShipmentModel.findOne({ _id })
+    .then((result) => {
+      //Retailer lo kuda cheyali ikkada
+      ShipmentModel.updateOne({ _id }, req.body)
+        .then(() => {
+          //  console.log("Status Updated Successfully");
+          res.status(200).send("Updated");
+        })
+        .catch((err) => {
+          console.log("error occured");
+        });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});
+
+app.post("/UpdateShipmentDate", (req, res) => {
+  const urlParams = new URLSearchParams(req.query);
+  const id = urlParams.get("id");
+  const sid = urlParams.get("shipmentid");
+  const _id = new mongoose.Types.ObjectId(id);
+  const _sid = new mongoose.Types.ObjectId(sid);
+  let newDate = req.body.NewDate;
+  let formattedDate = new Date(newDate.split("-").reverse().join("-"));
+  ShipmentModel.findOne({ _id: _sid })
+    .then((result) => {
+      ShipmentModel.updateOne({ _id: _sid }, { pud: formattedDate, status: 1 })
+        .then(() => {
+          console.log("sdfvb");
+          res.status(200).send("date updated successfully");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});
+
+app.post("/AcceptBid", (req, res) => {
+  const urlParams = new URLSearchParams(req.query);
+  const id = urlParams.get("id");
+  //console.log(id);
+  const shiperid = urlParams.get("shiperid");
+  //console.log(shiperid);
+  const shipmentid = urlParams.get("shipmentid");
+  //console.log(shipmentid);
+  const BestPrice = urlParams.get("bestprice");
+  //console.log(BestPrice);
+
+  const _id = new mongoose.Types.ObjectId(id);
+  const _shiperid = new mongoose.Types.ObjectId(shiperid);
+  const _shipmentid = new mongoose.Types.ObjectId(shipmentid);
+  ShipmentModel.findOne({ _id: _shipmentid }).then((result) => {
+    ShipmentModel.updateOne(
+      { _id: _shipmentid },
+      { status: "2", bestprice: BestPrice, shiperid: shiperid }
+    ).then(() => {
+      RetailerModel.findOne({ _id: _shiperid }).then((Result) => {
+        RetailerModel.updateOne({ _id: shiperid }, { state: 1 })
+          .then(() => {
+            Result.successfulshipments.push({
+              shipmentid: shipmentid,
+              bestprice: BestPrice,
+              status: 2,
+            });
+            Result.save()
+              .then(() => {
+                res.status(200).send("bid accepted");
+                const transport = nodemailer.createTransport({
+                  host: "smtp.gmail.com",
+                  port: 587,
+                  secure: false,
+                  auth: {
+                    user: "mukeshsamardhaginne@gmail.com",
+                    pass: "tdqr pbuy oxzl gdiy",
+                  },
+                });
+                const mailoptions = {
+                  from: process.env.EMAIL_ID,
+                  to: Result.email,
+                  subject: "ShipIt Shipment Order",
+                  html: `<h3>Congratulations</h3>
+                    <p>You Have Won The Bid,The Shipmentid Is ${result.id}</p>`,
+                };
+                transport.sendMail(mailoptions, (err, info) => {
+                  if (err) {
+                    console.log(err);
+                  } else {
+                    console.log("success");
+                  }
+                });
+              })
+              .catch((err) => {
+                console.log(err);
+              });
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      });
+    });
+  });
+});
+
+app.post("/EndRide", (req, res) => {
+  const urlParams = new URLSearchParams(req.query);
+  const sid = urlParams.get('sid');
+  console.log(sid);
+  const shiper = urlParams.get('shiperid');
+  console.log(shiper);
+  const _shiper = new mongoose.Types.ObjectId(shiper);
+  const _id = new mongoose.Types.ObjectId(sid);
   ShipmentModel.findOne({ _id }).then((result) => {
-    //Retailer lo kuda cheyali ikkada 
-    ShipmentModel.updateOne({ _id }, req.body).then(() => {
-    //  console.log("Status Updated Successfully");
-      res.status(200).send("Updated");
-    }).catch((err) => {
-      console.log("error occured");
+    let email = result.email;
+    const transport = nodemailer.createTransport({
+      host: "smtp.gmail.com",
+      port: 587,
+      secure: false,
+      auth: {
+        user: "mukeshsamardhaginne@gmail.com",
+        pass: "tdqr pbuy oxzl gdiy",
+      },
+    });
+    otp = generateotp();
+    console.log(email);
+    console.log(otp);
+    LoginotpModel.updateOne({ email }, { otp }).then((result) => {
+      console.log(result);
+      console.log("updated successfully");
+      RetailerModel.findOne({ _id: _shiper }).then((result) => {
+        let semail = result.email;
+        LoginotpModelr.updateOne({ email: semail }, { otp }).then((result) => {
+          console.log("Retailer side also updated successfully");
+        }).catch((err) => {
+          console.log(err);
+        })
+      }).catch((err) => {
+        console.log(err);
+      })
+    })
+
+    const mailoptions = {
+      from: process.env.EMAIL_ID,
+      to: email,
+      subject: "ShipIt Delivery Successful",
+      html: `<h3>Notice:<br>Remember To Tell The Otp Only After You Received The Load!</h3>
+      <p>OTP:<B>${otp}<B></p>`,
+    };
+    transport.sendMail(mailoptions, (err, info) => {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log("success");
+        res.status(200).send("Received Successfully");
+      }
+    });
+  })
+})
+
+app.post("/EndShipmentotp", (req, res) => {
+  const urlParams = new URLSearchParams(req.query);
+  const id = urlParams.get('id');
+  const shipmentid = urlParams.get('shipmentid');
+  const shiperid = urlParams.get('shiperid');
+  const _id = new mongoose.Types.ObjectId(id);
+  const _sid = new mongoose.Types.ObjectId(shipmentid);
+  const _shipid = new mongoose.Types.ObjectId(shiperid);
+  CustomerModel.findOne({ _id }).then((Result) => {
+    LoginotpModel.findOne({ email:Result.email }).then((RESULT) => {
+      let otp = RESULT.otp;
+      console.log(otp);
+      RetailerModel.findOne({ _id: _shipid }).then((result) => {
+        LoginotpModelr.findOne({ email: result.email }).then((ResulT) => {
+          let rotp = ResulT.otp;
+          console.log(rotp);
+           if (req.body.Endopt == otp && otp==rotp){
+              sendAlert(res, "OTP Validation Successful", "/RatingsPage?=id" + id + "&shipmentid=" + shipmentid + "&shiperid" + shiperid);
+           } else {
+              sendAlert(res, "Wrong OTP", "/TrackerPage?id=" + id + "&shipmentid=" + shipmentid);
+           }
+        })
+      })
+      // console.log(req.body);
     })
   }).catch((err) => {
     console.log(err);
   })
 })
-//start
-//post for changing mode
-//----------------------------------------------------------------
-//end
 
-//4o4 page
+
+/*
+driver state and dddate should also be updated
+ShipmentModel.findOne({ _sid })
+          .then((result) => {
+            // await RetailerModel.updateOne(
+            //   { _id: _shiperid, "successfulshipments.shipmentid": _sid },
+            //   { $set: { "successfulshipments.$.status": -1 } }
+            // );
+            ShipmentModel.updateOne({ _id: _sid }, { status: -1 }).then(() => {
+              RetailerModel.updateOne(
+              { _id: _shipid, "successfulshipments.shipmentid": _sid },
+                { $set: { "successfulshipments.$.status": -1 } }
+              ).then(() => {
+                console.log("Successfully delivered");
+            })
+            })
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+
+
+
+
+*/
 app.use((req, res) => {
   res.render("4o4page");
 });

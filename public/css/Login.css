@@ -207,4 +207,8 @@ a{
 #RetaSignIn{
     display:flex;
     justify-content: center;
+    margin-bottom:2vh;
+}
+#loading{
+    display:none;
 }

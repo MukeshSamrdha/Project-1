@@ -2,6 +2,7 @@
 <html lang="en">
 <%- include('../partials/header.ejs') %>
 <link rel="stylesheet" href="/css/ShipmentArea.css">
+<meta http-equiv="Permissions-Policy" content="geolocation=(self)">
 </head>
 <body>
     <%- include('../partials/navbar.ejs') %>
@@ -29,7 +30,7 @@
         <div id="Shipmentdisplay">
             <% let count=0 %>
                <% for(let i=0;i<Shipment.length;i++){ %>
-                <% if(Shipment[i].weight<=Form.weightrange){%>
+                <% if(Shipment[i].weight<=Form.weightrange && Shipment[i].status==1){%>
                     <% count++; %>
                  <div class="shipmentdiv">
                     <div class="shipmentdiv1">
@@ -37,7 +38,7 @@
                         ShipmentID-<%=Shipment[i]._id%>
                             </h3>
                         <div>
-                            <h3>₹5000</h3>
+                            <h3><%= Shipment[i].bestprice==-1?"No Bids":Shipment[i].bestprice %></h3>
                             <p>Current Bid</p>
                         </div>
                     </div>

@@ -1,0 +1,166 @@
+html{
+    scroll-behavior: smooth;
+}
+#navbar{
+    display: flex;
+    justify-content: space-between;
+}
+#first{
+    display:flex;
+}
+#middle{
+    display:flex;
+    justify-content: space-around;
+    width:20%;
+    margin:2%;
+}
+#last{
+    display:flex;
+    justify-content: space-around;
+    width:6%;
+    margin:1.5% 0%;
+}
+.middleele{
+    font-size:120%;
+    overflow: visible;
+}
+.navbtn{
+    border-radius:50%;
+    border-color:rgb(57, 57, 58);
+    background-color:white;
+}
+.navbtn:hover{
+    background-color:rgb(249, 249, 249);
+}
+.middleele a{
+    color:black;
+    text-decoration: none;
+    transition:transform 0.3s linear 0.05s;  
+}
+.middleele a:hover{
+    color:#0369A1;
+    transform: translateY(5px);
+}
+#main{
+    background-color: #F0F9FF;
+    padding:1vh 3vh;
+}
+#shipmentinfo{
+    padding:1vh 3vh;
+    background-color: white;
+    box-shadow: 0 0 10px 0 grey ;
+    border-radius:10px;
+    width:60%;
+    margin:2vh;
+}
+#headerdiv{
+    display:flex;
+    justify-content:start;
+    align-items: center;
+}
+#parentdiv{
+    display: flex;
+    justify-content:space-around;
+    align-items: center;
+}
+/* #parentdiv h3,p{
+    text-align: center;
+} */
+ h2{
+    margin-left:1vh;
+ }
+ #shiperinfo{
+    background-color: white;
+    box-shadow:0 0 10px 0 grey;
+    border-radius:10px;
+    width:30%;
+    padding:2vh 3vh;
+    margin:2vh;
+ }
+ #parentmaindiv{
+    display:flex;
+    justify-content: space;
+ }
+ .individualchild{
+    display:flex;
+    justify-content:space-around;
+    align-items: center;
+ }
+ .individualparent h3{
+    text-align:center;
+ }
+ .individualparent{
+    width: 30%;
+ }
+ #secondmain{
+    padding:2vh 3vh;
+    margin:0vh 2vh;
+    background-color: #F0F9FF;
+    display:flex;
+    justify-content:space-around;
+ }
+ #individual{
+    padding:2vh 5vh;
+    width:40%;
+    background-color: white;
+    border-radius:10px;
+    box-shadow:0 0 10px 0 grey;
+ }
+ #headerrat{
+    display:flex;
+    justify-content: start;
+    align-items: center;
+ }
+ #mainparentratings{
+     display: flex;
+     flex-direction:column;
+     align-items:center ;
+ }
+ #submitratings{
+    background-color:#0284C7 ;
+    font-size:1.1rem;
+    color:white;
+    padding:1vh;
+    margin-top:1vh;
+    border-radius:10px;
+    margin-bottom:1vh;
+ }
+ #submitratings:hover{
+    background-color: #0369A1;
+ }
+#paymentsdiv{
+  background-color: white;
+  box-shadow: 0 0 10px 0 grey;
+  padding:2vh 5vh;
+  border-radius:10px;
+  width:40%;
+
+ }
+#paymentsheader{
+    display:flex;
+    justify-content: start;
+    align-items: center;
+}
+#parentnote{
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+}
+.note{
+    display:flex;
+    flex-direction: column;
+    justify-content:center;
+}
+h3, p{
+    text-align:center;
+}
+#makepayments{
+    padding:1vh;
+    border-radius:10px;
+    font-size:1.1rem;
+    background-color: #0284C7;
+    color:white;
+}
+#makepayments:hover{
+    background-color: #0369A1;
+}

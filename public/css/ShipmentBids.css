@@ -131,3 +131,12 @@ h2{
 #homebtn:hover{
     background-color: #0369A1;
 }
+#noactiveshipers{
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    display:none;
+}
+#noactiveshipers h4{
+   text-align:center;
+}

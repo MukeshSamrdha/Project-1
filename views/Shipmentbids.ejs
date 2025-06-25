@@ -2,6 +2,7 @@
 <html lang="en">
 <%- include('../partials/header.ejs') %>
 <link rel="stylesheet" href="/css/ShipmentBids.css">
+<meta http-equiv="Permissions-Policy" content="geolocation=(self)">
 </head>
 <body>
     <nav>
@@ -46,16 +47,20 @@
             <p class="n<%= k[i].Shiperid %>">FirstName:_________</p>
             <p class="v<%= k[i].Shiperid %>">Vechile:______________</p>
           <hr>
-            <p>Offer:<%= k[i].Bestprice %></p>
+            <p >Offer:<%= k[i].Bestprice %></p>
             <p class="r<%= k[i].Shiperid %>">Ratings:___________</p>
           <div class="acceptbtn">
-             <button class="acceptbid">Accept</button>
+             <button class="acceptbid" id="s<%=i%><%= k[i].Shiperid %><%= k[i].Bestprice%>">Accept Bid</button>
           </div>
           </div>
         </div>
      <% }%>
+      <div  id="noactiveshipers">
+          <img src="assets/package (1).svg" style="height:50vh">
+        <h4>Their are no offers/drivers are busy,for this shipment,You can can resubmit your shipment once again</h4>
+        </div>
     </div>
-    <div id="loading" style="display: none;">
+    <div id="loading">
     <img src="/assets/Broken circle.gif" alt="Loading..." />
 </div>
 </body>

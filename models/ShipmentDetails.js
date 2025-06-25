@@ -19,7 +19,7 @@ const Shipmentschema = new schema(
     tcity: { type: String, required: true },
     tstate: { type: String, required: true },
     pud: { type: Date, required: true },
-    dda: { type: Date, required: true },
+    dda: { type: Date},
     status: { type: Number, required: true }, //true antey current ani shipment complete ayipothey false ani chey
     photo: { type: String, required: true }, //fileconstraints proper ga vadu
     cutoff: { type: Number, requied: true },

@@ -133,6 +133,16 @@ html{
     align-items: center;
     display:none;
 }
+#displaysectionactive{
+     margin:2vh 0vh;
+    height:50vh;
+    overflow-y:scroll;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    display:none;
+}
 .di{
    border-radius: 25px;
    background-color: white;
@@ -172,6 +182,11 @@ form input{
     width:40%;
     margin:3vh 0;
 
+}
+.inputdivdate{
+    display:flex;
+    justify-content: center;
+    margin-bottom:2vh;
 }
 .inputdiv1{
     display: flex;
@@ -299,6 +314,7 @@ form button:hover{
     font-size:1rem;
     color:white;
     border-radius:12px;
+    margin-top:1vh;
 }
 #divbtndi button:hover{
     background-color:#0369A1;
@@ -314,7 +330,7 @@ form button:hover{
     overflow-y: auto;
     border-radius:20px;
     display: none;
-
+    scrollbar-width:none;
 }
 .v
 h4{
@@ -439,4 +455,23 @@ h4{
 }
 .btndivs:hover{
     background-color: #0369A1;
+}
+
+#bidagaindiv{
+    width:330%;
+    display:flex;
+    justify-content: end;
+}
+#bidagaindiv button{
+    background-color:#0284C7;
+    padding:1vh;
+    font-size:1rem;
+    color:white;
+    border-radius:12px;
+}
+#bidagaindiv button:hover{
+    background-color:#0369A1;
+}
+#dda{
+    display:none;
 }

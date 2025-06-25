@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+    <%- include('../partials/header.ejs') %>
+    <link rel="stylesheet" href="/css/TrackerPage.css">
+    <meta http-equiv="Permissions-Policy" content="geolocation=(self)">
+</head>
+<body>
+<nav>
+    <div id="navbar">
+    <div id="first">
+      <img src="/assets/ship (1).svg" height="80%">
+      <h1 style="font-size:200%">ShipIt</h1>
+    </div>
+    <div id="middle">
+      <a id="homebtn">Home</a>
+    </div>
+    <div id="last">
+      <button class="navbtn" id="modebtn"><img src="assets/moon.svg" id="modebtnimg"></button>
+       <!-- <a href="/dark"><img src="assets/moon.svg" alt="moon"></a> -->
+    </div>
+    </div>
+</nav>
+<div id="main">
+    <div class="firstele">
+     <h3>Package Details</h3>
+     <div class="firstelediv">
+      <img src="assets/package (1).svg">
+      <div>
+        <h4>Weight</h4>
+        <p id="weight"><%= Result.weight %>Kg</p>
+      </div>
+     </div>
+     <div class="firstelediv">
+      <img src="assets/package (1).svg">
+      <div>
+        <h4>Dimensions</h4>
+        <p id="dimensions"><%= Result.length%>x<%= Result.width%>x<%=Result.height%>cm<sup>3</sup></p>
+      </div>
+    </div>
+    </div>
+    <div class="firstele">
+        <h3>Shiping Details</h3>
+         <div class="firstelediv">
+      <img src="assets/map-pin (1).svg">
+      <div>
+        <h4>From Address</h4>
+        <p id="fromaddress"><%= Result.fhno%>,<%=Result.fcolony%>,<%=Result.fcity%></p>
+      </div>
+     </div>
+     <div class="firstelediv">
+      <img src="assets/map-pin (1).svg">
+      <div>
+        <h4>To Address</h4>
+        <p id="toaddress"><%= Result.thno%>,<%=Result.tcolony%>,<%=Result.tcity%></p>
+      </div>
+    </div>
+    </div>
+    <div class="firstele">
+        <h3 >Shiper Details</h3>
+         <div class="firstelediv">
+      <img src="assets/user.svg">
+      <div id="namediv">
+        <h4 >Name</h4>
+        <p id="<%=Result.shiperid%>">ShipIt</p>
+      </div>
+     </div>
+     <div class="firstelediv">
+      <img src="assets/user.svg">
+      <div>
+        <h4>Phone Number</h4>
+        <p id="phonenumber">___________</p>
+      </div>
+    </div>
+    </div>
+    <p id="shiperid" style="display: none;"></p>
+</div>
+<h3 style="text-align: center;">Shipment Of This  Delivery Has Started On <%= Result.pud %></h3>
+ <div id="third">
+     <div id="notediv">
+                <img src="assets/package (1).svg" id="packageimg">
+            </div>
+            <div id="otpcame">
+               <p style="margin-bottom:-2vh;margin-top:-0.5vh;">Have You Received An Otp From Your Driver?</p> 
+                <br>
+                <button id="yesbtn">Yes</button>
+            </div>
+        <div id="otp">
+          <form action="" method="post" id="otpform">
+            <label for="Endopt">Enter the Otp:</label>
+            <br>
+            <input type="number" id="Endopt" name="Endopt" required>
+            <br>
+            <button type="submit">Submit</button>
+          </form>
+        </div>
+    </div>
+  <div id="second">
+        <h4 style="text-align: center;">Tracking Of The Shipment</h4>
+        <iframe src="http://localhost:3000/"></iframe>
+    </div>
+    <%- include('../partials/footer.ejs') %>
+</body>
+<script src="/js/TrackerPage.js"></script>
+</html>

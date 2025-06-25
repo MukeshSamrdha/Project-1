@@ -2,6 +2,7 @@
 <html lang="en">
     <%- include('../partials/header.ejs') %>
     <link rel="stylesheet" href="/css/Home.css">
+    <meta http-equiv="Permissions-Policy" content="geolocation=(self)">
 </head>
 <body>
   <%- include('../partials/navbar.ejs') %>
@@ -20,7 +21,7 @@
     </div>
 
     <div class="profileele1" >
-   <h4 id="emailhead"><%= Result.email %></h4>
+   <h4 id="emailhead">Email : <%= Result.email %></h4>
     </div>
 
     <div class="pione">
@@ -39,7 +40,7 @@
    <% if(Address == ""){ %>
      <h4>Address ,Not Yet Entered</h4>
   <% }else{ %>
-      <h4><%= Address %></h4>
+      <h4>Address : <%= Address %></h4>
   <% }   %>
   <!-- add the pencil btn add functionality -->
     </div>
@@ -60,21 +61,17 @@
         </div>
       </div>
       <div id="yourshipments">
-        <div id="buttondivmain">
-        <div id="buttondiv">
-            <button id="currentshipments" class="btndivs">Active Shipments</button>
-        </div>
-        </div>
            <h1 id="yourshipmentheading">Your Shipments</h1>
            <div id="yourshipmentbtns">
             <button class="ysb" id="ysbcs">Currently In Auction</button>
+            <button class="ysb" id="ysbas">Active Shipments</button>
             <button class="ysb" id="ysbrt">Ready to start</button>
             <button class="ysb" id="ysbps">Delivered Shipments</button>
            </div>
            <div id="displaysection">
             <!-- render the data into divs here past are also their -->
+              <% let v=0 %>
              <% if(Shipment.length>=1){%>
-                  <% let v=0 %>
              <% for(let i=0;i<Shipment.length;i++){ %>
                 <% if(Shipment[i].status==1){%>
                     <% v++ %>
@@ -96,7 +93,7 @@
                 </div>
             </div>
 
-                     <div class="viewdetails" id="viewdetails<%=v%>">
+            <div class="viewdetails" id="viewdetails<%=v%>">
              <div class="vdheading">
             <h3>Shipment-<%=v%> Details</h3>
             <button class="closex"><img src="/assets/x.svg"></button>
@@ -192,7 +189,7 @@
             </h4>
             </div>
         </div>
-        <div class="datediv">
+        <!-- <div class="datediv">
             <img src="/assets/calendar-days.svg">
             <div class="vdele"> 
              <p>Delivery Date</p>
@@ -200,12 +197,12 @@
                   <%= b %>
             </h4>
             </div>
-        </div>
+        </div> -->
         </div>
         </div>
                     <%}%>
             <% } %>
-            <%}else{ %>
+            <%}if(v==0){ %>
                 <div class="noshipment">
                     <h2>No Shipments Yet</h2>
                 </div>
@@ -258,6 +255,7 @@
                 <p>Time Left:0 days</p>
                 </div>
                 <div id="divbtndi">
+                      <button type="button" class="bidagain" id="rs<%=Shipment[i].id%>">Resubmit This Shipment</button>
                     <button type="button" class="viewdetailsbtnready" id="<%=Shipment[i].id%>">View Offers</button>
                 </div>
                 </div>
@@ -267,6 +265,35 @@
              <%if(d==0){%>
                  <div class="noshipment">
                     <h2>Currently their are no ready shipments</h2>
+                </div>
+            <%}%>
+            </div>
+            <div id="displaysectionactive">
+                <% let a=0 %>
+             <% for(let i=0;i<Shipment.length;i++){%>
+               <% if(Shipment[i].status==2){%>
+                   <% a++; %>
+                  <div class="di" id="dip-<%=a%>">
+                <div class="headerdi">
+                    <img src="/assets/package (1).svg">
+                    <h3>Shipment-<%=a%></h3>
+                </div>
+                <div id="twodivp">
+                <div>
+                <p>Bids:<%= Shipment[i].bid ? Shipment[i].bid.length : 0 %></p>
+                <p>Status:Being Shiped</p>
+                <p>Time Left:0 days</p>
+                </div>
+                <div id="divbtndi">
+                    <button type="button" class="viewdetailsbtnactive" id="<%=Shipment[i].id%>">Track My Shipment</button>
+                </div>
+                </div>
+                </div>
+               <%}%>
+             <%}%>
+             <%if(a==0){%>
+                 <div class="noshipment">
+                    <h2>Currently their are no active shipments</h2>
                 </div>
             <%}%>
             </div>
@@ -365,17 +392,14 @@
             <input type="state" id="state" name="tstate" required placeholder="State">
             </div>
         </div>
-        <div class="inputdiv">
+        <div class="inputdivdate">
             <div class="inputele">
             <label for="pud">Pick Up Date</label>
             <br>
             <input type="date" id="pud" name="pud" required >
             </div>
-            <div class="inputele">
-            <label for="dda">Delivery Date</label>
             <br>
-            <input type="date" id="dda" name="dda" required >
-            </div>
+            <input type="date" id="dda" name="dda">
         </div>
         <input type="number" name="status" id="checkbox" value="1">
         <textarea id="description" placeholder="Description" name="description" required></textarea>

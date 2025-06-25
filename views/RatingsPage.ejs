@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+    <%- include('../partials/header.ejs') %>
+    <link rel="stylesheet" href="/css/RatingsPage.css">
+    <meta http-equiv="Permissions-Policy" content="geolocation=(self)">
+</head>
+<body>
+   <nav>
+    <div id="navbar">
+    <div id="first">
+      <img src="/assets/ship (1).svg" height="80%">
+      <h1 style="font-size:200%">ShipIt</h1>
+    </div>
+    <div id="last">
+      <button class="navbtn" id="modebtn"><img src="assets/moon.svg" id="modebtnimg"></button>
+    </div>
+    </div>
+</nav>
+    <div id="main">
+        <div id="parentmaindiv">
+        <div id="shipmentinfo">
+           <div id="headerdiv">
+            <img src="assets/package (1).svg">
+            <h2>Shipment Details</h2>
+           </div>
+           <p>Status:Delivered</p>
+           <div id="parentdiv">
+            <div id="childone">
+             <h3>Orgin</h3>
+             <p id="fromaddress">From Address</p>
+             <h3>Weight</h3>
+             <p id="weight">Weight</p>
+             <h3 >Price</h3>
+             <p id="bestprices"> BestPrice</p>
+            </div>
+            <div id="childtwo">
+              <h3>Pickup Date</h3>
+              <p id="pud">Delivered On</p>
+              <h3>Destination</h3>
+              <p id="toaddress">Destination</p>
+              <h3>Dimensions</h3>
+              <p id="dimensions">Dimensions</p>
+            </div>
+           </div>
+        </div>
+        <div id="shiperinfo">
+            <div id="headerdiv">
+                <img src="/assets/ship (1).svg">
+                <h2>Shiper Details</h2>
+            </div>
+            <div id="parentrdiv">
+                <h3>Shiper Name</h3>
+                <p id="shipername">Shiper Name</p>
+                <h3>Successful Shipments</h3>
+                <p id="successfulshipments">Successful Shipments</p>
+                <h3>Phone Number</h3>
+                <p id="phonenumber">8328501487</p>
+                <h3>Ratings</h3>
+                <p id="ratings">Ratings</p>
+            </div>
+        </div>
+        </div>
+    </div>
+    <div id="secondmain">
+        <div id="individual">
+            <div id="headerrat">
+                <img src="/assets/star_filled.svg">
+                <h2>Rate Your Delivery</h2>
+            </div>
+            <div id="mainparentratings">
+            <div class="individualparent">
+          <h3>Communication</h3>
+          <div class="individualchild">
+          <div>
+            <img src="/assets/star.svg">
+             <img src="/assets/star.svg">
+              <img src="/assets/star.svg">
+               <img src="/assets/star.svg">
+                <img src="/assets/star.svg">
+          </div>
+          <p>0/5</p>
+          </div>
+          </div>
+          <div class="individualparent">
+          <h3>Professionalism</h3>
+          <div class="individualchild">
+          <div>
+            <img src="/assets/star.svg">
+             <img src="/assets/star.svg">
+              <img src="/assets/star.svg">
+               <img src="/assets/star.svg">
+                <img src="/assets/star.svg">
+          </div>
+          <p>0/5</p>
+          </div>
+          </div>
+          <div class="individualparent">
+          <h3>Punctuality</h3>
+          <div class="individualchild">
+          <div>
+            <img src="/assets/star.svg">
+             <img src="/assets/star.svg">
+              <img src="/assets/star.svg">
+               <img src="/assets/star.svg">
+                <img src="/assets/star.svg">
+          </div>
+          <p>0/5</p>
+          </div>
+          </div>
+          <button id="submitratings">Submit Ratings</button>
+          </div>
+        </div> 
+        <div id="paymentsdiv">
+            <div id="paymentsheader">
+                <img src="/assets/indian-rupee.svg">
+                <h2>Payment Details</h2>
+            </div>
+            <div id="parentnote">
+            <div class="note">
+                <h3>Delivery Cost:</h3>
+                <p id="deliverycost">₹25000</p>
+            </div>
+            <div class="note">
+                <h3>Platform Cost (5%):</h3>
+                <p id="platformcost">₹1250</p>
+            </div>
+            <div class="note">
+                <h3>Total Cost:</h3>
+                <p id="totalcost">₹26250</p>
+            </div>
+             <button id="makepayments">Finish Payment</button>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="/js/RatingsPage.js"></script>
+</html>

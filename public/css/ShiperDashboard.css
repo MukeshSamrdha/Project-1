@@ -164,16 +164,17 @@
     box-shadow:0 0 10px 0 grey;
 }
 #fourthdiv{
-    display:flex;
-    justify-content: space-between;
-    padding:1vh 3vh;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom:2vh;
 }
 #fourthfirst{
-   background-color: white;
    padding:2vh 3vh;
    width:64%;
    border-radius:20px;
    box-shadow:0 0 10px 0  grey;
+   padding-bottom:6vh;
 }
 #fourthheader{
   display:flex;
@@ -227,4 +228,99 @@
 }
 #profilebtn{
     display:none;
+}
+#displaysection{
+    display:flex;
+    flex-direction:column;
+    height:23vh;
+    overflow-y: auto;
+}
+.transitshipment{
+    padding:0.5vh 2vh;
+    box-shadow:0 0 10px 0 grey;
+    border-radius:10px;
+    margin:1vh;
+}
+.transitshipment div{
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.transitshipment div img{
+    height:8vh;
+}
+.transitshipment div button{
+    padding:1vh;
+    background-color: #0284C7;
+    color:white;
+     border-radius:10px;
+    font-size:1.1rem;
+}
+.transitshipment div button:hover{
+    background-color: #0369A1;
+}
+.viewdetailsdiv{
+    box-shadow: 0 0 10px 0 gray;
+    padding:1vh 4vh;
+    position:fixed;
+    top:8vh;
+    width:50%;
+    height:80vh;
+    background-color: white;
+    overflow-y: auto;
+    border-radius:20px;
+    display: none;
+    scrollbar-width:none;
+}
+.viewdetailsdiv p{
+    text-align: center;
+}
+.v
+h4{
+    text-align:center;
+}
+.vdheading{
+    display:flex;
+    justify-content: space-between;
+}
+.vdele h4{
+    text-align: center;
+}
+.viewdetailsdiv h3{
+    text-align: center;
+}
+.viewdetailsdiv  h4{
+    margin-top:-1vh;
+    text-align: center;
+}
+.viewdetails p{
+    text-align: center;
+}
+.one{
+    display:flex;
+    justify-content: space-evenly;
+}
+.two{
+    display:flex;
+    justify-content: space-evenly;
+}
+.three{
+     display:flex;
+    justify-content: space-evenly;
+}
+.outervd{
+    display:flex;
+    justify-content: center;
+}
+.datediv{
+    display: flex;
+    justify-content: center;
+}
+.datediv img{
+    margin-right:1vh;
+}
+.closex{
+    height:5vh;
+    border-radius:25px;
+    background-color: white;
 }

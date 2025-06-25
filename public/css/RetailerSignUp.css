@@ -118,3 +118,33 @@ form input{
 #mode{
     display:none;
 }
+/*
+ <!--  state: { type: String, required:true },
+    punc: { type: String, required: true },
+    commu: { type: String, required: true },
+    profe: { type: String, required: true },
+    dr: { type: String, requied: true },
+    at: { type: String, requied: true },
+    dis:{type:String,required:true}, -->
+*/
+#state{
+    display:none;
+}
+ #punc{
+ display:none;
+}
+#commu{
+display:none;
+}
+#profe{
+display:none;
+}
+#dr{
+display:none;
+}
+#at{
+display:none;
+}
+#dis{
+display:none;
+}

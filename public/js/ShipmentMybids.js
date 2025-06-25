@@ -33,7 +33,9 @@ async function loaddoc() {
         let main = result[0].children;
         let id = main[0].getAttribute("id");
         let details = await getshipmentdetails(id);
-
+      if (details.status != 1) {
+        ele.style.display = "none";
+        }
         if (details) {
            // console.log(details);
             document.querySelector("#dimensions" + id).innerHTML = "Dimensions:" + details.length + 'x' + details.width + 'x' + details.height;

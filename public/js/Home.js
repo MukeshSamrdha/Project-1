@@ -7,37 +7,60 @@ let btns = document.querySelectorAll(".ysb");
 }
 btns.forEach((ele) => {
     ele.addEventListener("click", () => {
-        let id = ele.getAttribute("id");
+      let id = ele.getAttribute("id");
+      console.log(id);
         if (id == "ysbcs"){
             document.querySelector("#ysbcs").style.backgroundColor = "#0284C7";
             document.querySelector("#ysbcs").style.color = "white";
             document.querySelector("#ysbps").style.backgroundColor = "white";
           document.querySelector("#ysbps").style.color = "black";
             document.querySelector("#ysbrt").style.backgroundColor = "white";
-            document.querySelector("#ysbrt").style.color = "black";
+          document.querySelector("#ysbrt").style.color = "black";
+           document.querySelector("#ysbas").style.backgroundColor = "white";
+           document.querySelector("#ysbas").style.color = "black";
           document.querySelector("#displaysection").style.display = "flex";
           document.querySelector("#displaysectionpast").style.display = "none";
           document.querySelector("#displaysectionready").style.display = "none";
+           document.querySelector("#displaysectionactive").style.display = "none";
         }else if(id=="ysbrt"){
               document.querySelector("#ysbcs").style.backgroundColor ="white";
               document.querySelector("#ysbcs").style.color = "black";
               document.querySelector("#ysbps").style.backgroundColor = "white";
           document.querySelector("#ysbps").style.color = "black";
             document.querySelector("#ysbrt").style.backgroundColor = "#0284C7";
-            document.querySelector("#ysbrt").style.color = "white";
+          document.querySelector("#ysbrt").style.color = "white";
+           document.querySelector("#ysbas").style.backgroundColor = "white";
+           document.querySelector("#ysbas").style.color = "black";
             document.querySelector("#displaysection").style.display = "none";
-            document.querySelector("#displaysectionpast").style.display = "none";
+          document.querySelector("#displaysectionpast").style.display = "none";
+            document.querySelector("#displaysectionactive").style.display = "none";
             document.querySelector("#displaysectionready").style.display = "flex";
-        }else {
+        } else if (id=="ysbas") {
+           document.querySelector("#ysbcs").style.backgroundColor = "white";
+           document.querySelector("#ysbcs").style.color = "black";
+           document.querySelector("#ysbps").style.backgroundColor = "white";
+           document.querySelector("#ysbps").style.color = "black";
+           document.querySelector("#ysbrt").style.backgroundColor = "white";
+          document.querySelector("#ysbrt").style.color = "black";
+          document.querySelector("#ysbas").style.backgroundColor = "#0284C7";
+          document.querySelector("#ysbas").style.color = "white";
+            document.querySelector("#displaysection").style.display = "none";
+          document.querySelector("#displaysectionpast").style.display = "none";
+          document.querySelector("#displaysectionready").style.display = "none";
+           document.querySelector("#displaysectionactive").style.display = "flex";
+        } else {
            document.querySelector("#ysbcs").style.backgroundColor ="white";
               document.querySelector("#ysbcs").style.color = "black";
               document.querySelector("#ysbps").style.backgroundColor = "#0284C7";
           document.querySelector("#ysbps").style.color = "white";
             document.querySelector("#ysbrt").style.backgroundColor = "white";
-            document.querySelector("#ysbrt").style.color = "black";
+          document.querySelector("#ysbrt").style.color = "black";
+            document.querySelector("#ysbas").style.backgroundColor = "white";
+            document.querySelector("#ysbas").style.color = "black";
             document.querySelector("#displaysection").style.display = "none";
           document.querySelector("#displaysectionpast").style.display = "flex";
-            document.querySelector("#displaysectionready").style.display = "none";
+          document.querySelector("#displaysectionready").style.display = "none";
+                     document.querySelector("#displaysectionactive").style.display = "none";
         }
     })
 })
@@ -99,6 +122,7 @@ logout.addEventListener("click", () => {
 
   },2000);
 });
+
 let closex = document.querySelectorAll(".closex");
 closex.forEach((ele) => {
   ele.addEventListener("click", () => {
@@ -120,6 +144,34 @@ viewdetailsbtn.forEach((ele) => {
     document.querySelector(newid).style.backdropFilter = "blur(10px)";
   });
 });
+
+let viewdetailsbtnactive = document.querySelectorAll(".viewdetailsbtnactive");
+viewdetailsbtnactive.forEach((ele) => {
+  ele.addEventListener("click", (req, res) => {
+    let shipmentid = ele.getAttribute('id');
+    window.location.href = "/TrackerPage?id=" + id + "&shipmentid=" + shipmentid;
+   })
+})
+
+let bidagainbtn = document.querySelectorAll(".bidagain");
+bidagainbtn.forEach((ele) => {
+  ele.addEventListener("click",()=>{
+    let sid = ele.getAttribute('id').slice(2); 
+    let newdate = prompt("Enter the new pickup date for your shipment in  format of dd-mm-yyyy"); 
+    console.log(newdate);
+    fetch("/UpdateShipmentDate?id="+id+"&shipmentid="+sid, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ NewDate: newdate })
+    }).then(() => {
+      alert("Date Updated Successfully");
+      console.log("hi");
+      window.location.href = "/Home?id=" + id;
+    }).catch(() => {
+      console.log(err);
+    })
+  })
+})
 
 let mode;
 async function getmode(){  //onload

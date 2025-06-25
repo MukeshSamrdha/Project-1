@@ -2,6 +2,7 @@
 <html lang="en">
     <%- include('../partials/header.ejs') %>
     <link rel="stylesheet" href="/css/RetailerSignUp.css">
+    <meta http-equiv="Permissions-Policy" content="geolocation=(self)">
 </head>
 <body>
   <%- include('../partials/navbar.ejs') %>
@@ -32,7 +33,7 @@
         <button type="button" id="companybtn">I Have A Company</button>
          <br>
          <div id="togglediv">
-        <label for="ca">Company Address</label>
+        <label for="ca">Company Name</label>
          <br>
         <input type="text" id="ca" name="ca">
          </div>
@@ -54,7 +55,14 @@
         <input type="password" id="verifypassword" name="verifypassword" required>
          <br>
          <input type="number" id="ratings" name="ratings" value="0.0" required>
-         <input type="text" id="ds" name="ds" value="f" required>
+         <input type="string" id="state" name="state" value="0" requied>
+        <input type="string" id="punc" name="punc" value="0" required>
+        <input type="string" id="commu" name="commu" value="0"requied>
+        <input type="string" id="profe" name="profe" value="0" requied>
+        <input type="string" id="dr" name="dr" value="0" requied>
+        <input type="string" id="at" name="at" value="0" requied>
+        <input type="string" id="dis" name="dis" value="0" requied>
+        <input type="text" id="ds" name="ds" value="f" required>
         <div id="caution">
             <div>
                 <img src="/assets/triangle-alert.svg">

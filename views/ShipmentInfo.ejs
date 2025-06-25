@@ -2,6 +2,7 @@
 <html lang="en">
 <%- include('../partials/header.ejs') %>
 <link rel="stylesheet" href="/css/ShipmentInfo.css">
+<meta http-equiv="Permissions-Policy" content="geolocation=(self)">
 </head>
 <body>
     <nav>
@@ -80,15 +81,15 @@
         if (document.querySelector("#timeremaining").innerHTML === "Completed") {
           document.querySelector("#placebid").style.display = "none";
           document.querySelector("#auctionendedmain").style.display = "block";
-          fetch("/GetStatus?shipmentid=" + getshipmentid(), {
-           method: "POST",
-           headers: { "Content-Type": "application/json" },
-           body: JSON.stringify({ status:0})
-           }).then(() => {
-          console.log("Success");
-           }).catch((err) => {
-          console.log(err);
-         })
+        //   fetch("/GetStatus?shipmentid=" + getshipmentid(), {
+        //    method: "POST",
+        //    headers: { "Content-Type": "application/json" },
+        //    body: JSON.stringify({ status:0})
+        //    }).then(() => {
+        //   console.log("Success");
+        //    }).catch((err) => {
+        //   console.log(err);
+        //  })
         } else {
             document.querySelector("form").action = "PlaceBid?id=" + id + "&shipmentid=" + getshipmentid();
         }

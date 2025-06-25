@@ -2,6 +2,7 @@
 <html lang="en">
 <%- include("../partials/header.ejs") %>
 <link rel="stylesheet" href="/css/ShiperDashboard.css">
+<meta http-equiv="Permissions-Policy" content="geolocation=(self)">
 </head>
 <body>
     <%- include("../partials/navbar.ejs") %>
@@ -15,6 +16,7 @@
     </div>
     <div id="seconddiv">
         <div class="seconddivele">
+            <p id="emailhead" style="display:none;"><%=Result.email%></p>
             <h2>Profile Details</h2>
             <div id="profileinfo">
                 <img src="/assets/user.svg">
@@ -40,36 +42,36 @@
             <h2>Vechile Details</h2>
             <div class="formlike">
                 <p>Vechile Type</p>
-                <div class="formlikeele">Fetching</div>
+                <div class="formlikeele">Goods Carrier</div>
             </div>
              <div class="formlike">
-                <p>Vechile Model</p>
-                <div class="formlikeele">Fetching</div>
+                <p>Vechile RegestrationNo</p>
+                <div class="formlikeele"><%= Result.vr%></div>
             </div>
              <div class="formlike">
                 <p>Capacity</p>
-                <div class="formlikeele">Fetching</div>
+                <div class="formlikeele"><%= Result.capacity%>Kg</div>
             </div>
         </div>
         <div class="seconddivele">
             <h2>Ratings & Reviews</h2>
             <div id="seconddivflex">
                 <img src="assets/star_filled.svg">
-                <p>5 (1 reviews)</p>
+                <p><%= Result.ratings%>(<%= Result.successfulshipments.length %> reviews)</p>
             </div>
              <div class="CS">
              <p>Punctuality</p>
-             <h3>18</h3>
+             <h3><%= Result.punc %></h3>
             </div>
 
              <div class="CS">
              <p>Communication</p>
-             <h3>18</h3>
+             <h3><%= Result.commu %></h3>
             </div>
 
              <div class="CS">
              <p>Professionalism</p>
-             <h3>18</h3>
+             <h3><%= Result.profe%></h3>
             </div>
         </div>
     </div>
@@ -82,7 +84,7 @@
             <img src="assets/clock.svg">
             <div class="thirdelement">
               <p style="color:#0e8f0e">On time delivery rate</p>
-              <h2>100%</h2>
+              <h2><%=Result.dr%>%</h2>
             </div>
         </div>
         </div>
@@ -92,7 +94,7 @@
              <img src="assets/truck.svg">
             <div class="thirdelement">
               <p style="color:#1774a0">Average delivery time</p>
-              <h2>2-3 days</h2>
+              <h2><%=Result.at%> days</h2>
             </div>
          </div>
          </div>
@@ -101,7 +103,7 @@
              <img src="assets/map-pin (1).svg">
             <div class="thirdelement">
               <p style="color:#a71ea7">Total distance covered</p>
-              <h2>0 km</h2>
+              <h2><%= Result.dis%> km</h2>
             </div>
           </div>
           </div>
@@ -115,7 +117,118 @@
             </div>
             <div id="fourthfirstinner">
                 <h2>Current Shipments In Transit</h2>
-                <p>Currently their are no active shipments to start a shipment please click "newshipment"</p>
+                <div id="displaysection">
+                <% let z=0; %>
+                <% for(let i=0;i<Result.successfulshipments.length;i++){%>
+                    <%if(Result.successfulshipments[i].status==2){%>
+                        <% z++ %>
+                         <div class="transitshipment">
+                        <div>
+                           <div>
+                           <img src="assets/package (1).svg">
+                           <h3 id="<%=Result.successfulshipments[i].shipmentid%>">ShipmentId-<%=Result.successfulshipments[i].shipmentid%></h3>
+                           </div>
+                           <div>
+                           <button type="button" style="margin-right:1vh;" class="endridebtn" id="er<%=Result.successfulshipments[i].shipmentid%>">End Ride</button>
+                           <button type="button" class="viewdetailsbtn" id="vdbtn<%=Result.successfulshipments[i].shipmentid%>">View Details</button>
+                           </div>
+                        </div>
+                          </div>
+                    </div>
+                     <div class="viewdetailsdiv" id="vddiv<%=Result.successfulshipments[i].shipmentid%>">
+             <div class="vdheading">
+            <h3>ShipmentDetails</h3>
+            <button class="closex"><img src="/assets/x.svg"></button>
+           </div>
+            <h3>Status & Bids</h3> 
+               <div class="one">
+             <div class="vdele">
+                <p>Status</p>
+                <h4>In Delivery</h4>
+              </div>
+              <div class="vdele">
+                  <p>Contact Info</p>
+                 <h4 id="bid<%=Result.successfulshipments[i].shipmentid%>"></h4>
+                </div>
+             </div>
+              <h3>Package Dimensions</h3>
+             <div class="two">
+                 <div class="vdele">
+                   <p>Length</p>
+                   <h4 id="len<%=Result.successfulshipments[i].shipmentid%>"></h4>
+                 </div>
+               <div class="vdele">
+                      <p>Width</p>
+                    <h4 id="wid<%=Result.successfulshipments[i].shipmentid%>"></h4>
+             </div>
+              <div class="vdele">
+               <p>Height</p>
+                   <h4 id="hei<%=Result.successfulshipments[i].shipmentid%>"></h4>
+                 </div>
+               <div class="vdele"> 
+                   <p>Weight</p>
+                     <h4 id="wei<%=Result.successfulshipments[i].shipmentid%>"></h4>
+                </div>
+            </div>
+             <h3>From Address</h3>
+              <div class="three">
+                  <div class="vdele">
+                         <p>House Number</p>
+             <h4 id="fhno<%=Result.successfulshipments[i].shipmentid%>"></h4>
+             </div>
+               <div class="vdele">
+                 <p>Colony</p>
+                 <h4 id="fcol<%=Result.successfulshipments[i].shipmentid%>"></h4>
+             </div>
+             <div class="vdele">
+               <p>City</p>
+              <h4 id="fcity<%=Result.successfulshipments[i].shipmentid%>"></h4>
+             </div>
+          </div>
+         <div class="three">
+          <div class="vdele">
+             <p>pincode</p>
+             <h4 id="fpc<%=Result.successfulshipments[i].shipmentid%>"></h4>
+         </div>
+         <div class="vdele"> 
+              <p>State</p>
+              <h4 id="fs<%=Result.successfulshipments[i].shipmentid%>"></h4>
+         </div>
+         </div>
+         <h3>To Address</h3>
+         <div class="three">
+         <div class="vdele">
+             <p>House Number</p>
+            <h4 id="thno<%=Result.successfulshipments[i].shipmentid%>"></h4>
+        </div>
+        <div class="vdele">
+            <p>Colony</p>
+            <h4 id="tcol<%=Result.successfulshipments[i].shipmentid%>"></h4>
+        </div>
+        <div class="vdele">
+            <p>City</p>
+            <h4 id="tcity<%=Result.successfulshipments[i].shipmentid%>"></h4>
+        </div>
+         </div>
+        <div class="three">
+         <div class="vdele">
+            <p>pincode</p>
+            <h4 id="tpc<%=Result.successfulshipments[i].shipmentid%>" ></h4>
+        </div>
+        <div class="vdele"> 
+             <p>State</p>
+             <h4 id="ts<%=Result.successfulshipments[i].shipmentid%>"></h4>
+        </div>
+        </div>
+        <div class="three">
+        </div>
+        </div>
+            <%}%>
+                <%}%>
+                <% if(z==0){%>
+                    <p>Currently Their Are No Active Shipers,To Start Bidding Click On New Shipment</p>
+                </div>
+                    <%}%>
             </div>
         </div>
         <div class="seconddivele">
@@ -134,7 +247,7 @@
              <h3>6910</h3>
             </div>
         </div>
-    </div>
+          </div>
     </div>
     <%- include("../partials/footer.ejs")%>
 </body>

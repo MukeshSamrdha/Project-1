@@ -8,8 +8,8 @@ const Customerschema = new schema({
     dob: { type: Date, required: true },
     createpassword: { type: String, required: true },
     verifypassword: { type: String, required: true },
-    address: { type: String },
-    mode: { type: String, required: true }
+    address: { type: String,required:true },
+    mode: { type: String, required: true },
 }, { timestamps: true }
 );
 

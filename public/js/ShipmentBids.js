@@ -1,4 +1,4 @@
-console.log("HI");
+
 async function details(id) {
     try {
         let response = await fetch("/Retailerdetails?id=" + id, {
@@ -14,19 +14,36 @@ async function details(id) {
             console.log(err);
         }
 }
+
  function redirect() {
    const urlParams = new URLSearchParams(window.location.search);
    const id = urlParams.get("id");
+   return id;
+}
+function getshipmentid() {
+     const urlParams = new URLSearchParams(window.location.search);
+   const id = urlParams.get("shipmentid");
    return id;
  }
 let id = redirect();
 document.querySelector("#homebtn").addEventListener("click", () => {
     window.location.href = "/Home?id=" + id;
- })
+})
+function checkactiveshipments(kou) {
+  let array = document.querySelectorAll(".shiperbids");
+  if (kou == array.length) {
+      document.querySelector("#noactiveshipers").style.display = "flex";
+  }
+}
+  let kou = 0;
 document.querySelectorAll(".shiperbids").forEach(async (ele) => {
     let child = ele.children; 
     let id = child[0].getAttribute('class');
     let getdetails = await details(id);
+    if (getdetails.state == 1) {
+        kou++;
+        ele.style.display = "none"; 
+     };
     document.querySelectorAll('.n' + id).forEach((ele) => {
         ele.innerHTML = "FirstName:" + getdetails.fullname;
     })
@@ -35,6 +52,23 @@ document.querySelectorAll(".shiperbids").forEach(async (ele) => {
     })
     document.querySelectorAll('.r' + id).forEach((ele) => {
         ele.innerHTML = "Ratings:" + getdetails.ratings;
+    })
+    checkactiveshipments(kou);
+})
+
+let acceptbids = document.querySelectorAll(".acceptbid");
+acceptbids.forEach(async (ele) => {
+    ele.addEventListener("click", () => {
+        let shiperid = ele.getAttribute("id").slice(2, 26);
+        let bestprice = ele.getAttribute("id").slice(26);
+        fetch("/AcceptBid?shiperid=" + shiperid + "&shipmentid=" + getshipmentid()+"&id="+id+"&bestprice="+bestprice, {
+            method: "POST",
+            headers:{"Content-Type":"application/json"}
+        }).then(() => {
+            console.log("HI");
+            alert("The Delivery Of This Shipment Has Started");
+            window.location.href = "/Home?id=" + id;
+        })
     })
 })
 
@@ -173,7 +207,6 @@ function changemode(mode) {
                      });
                 })
                 .catch((err) => {
-                    console.log("HI");
                     console.log(err);
                 });
         } else {
@@ -217,7 +250,6 @@ function changemode(mode) {
                     })
                 })
                 .catch((err) => {
-                    console.log("HI");
                     console.log(err);
                 });
         }
